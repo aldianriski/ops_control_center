@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { adminExtendedApi } from '../api/extended';
+import AuditLog from '../components/AuditLog';
 import {
   Key,
   AlertTriangle,
@@ -12,6 +13,7 @@ import {
   Copy,
   CheckCircle,
   Settings,
+  History,
 } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -49,10 +51,10 @@ interface ReportTemplate {
 const Admin = () => {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = (searchParams.get('tab') as 'tokens' | 'thresholds' | 'templates') || 'tokens';
+  const activeTab = (searchParams.get('tab') as 'tokens' | 'thresholds' | 'templates' | 'audit') || 'tokens';
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
 
-  const setActiveTab = (tab: 'tokens' | 'thresholds' | 'templates') => {
+  const setActiveTab = (tab: 'tokens' | 'thresholds' | 'templates' | 'audit') => {
     setSearchParams({ tab });
   };
 
@@ -173,6 +175,7 @@ const Admin = () => {
     { id: 'tokens' as const, label: 'API Tokens', icon: Key },
     { id: 'thresholds' as const, label: 'Alert Thresholds', icon: AlertTriangle },
     { id: 'templates' as const, label: 'Report Templates', icon: FileText },
+    { id: 'audit' as const, label: 'Audit Logs', icon: History },
   ];
 
   const severityColors: Record<AlertThreshold['severity'], string> = {
@@ -544,6 +547,13 @@ const Admin = () => {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Audit Logs Tab */}
+        {activeTab === 'audit' && (
+          <div className="p-6">
+            <AuditLog />
           </div>
         )}
       </div>
