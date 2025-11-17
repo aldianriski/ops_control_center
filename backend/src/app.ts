@@ -15,6 +15,13 @@ import reportsRoutes from './routes/reports.routes';
 import sopRoutes from './routes/sop.routes';
 import authRoutes from './routes/auth.routes';
 import adminRoutes from './routes/admin.routes';
+import timelineRoutes from './routes/timeline.routes';
+import evidenceRoutes from './routes/evidence.routes';
+import assetsRoutes from './routes/assets.routes';
+import recommendationsRoutes from './routes/recommendations.routes';
+import aiopsRoutes from './routes/aiops.routes';
+import sopExecutionRoutes from './routes/sopExecution.routes';
+import adminExtendedRoutes from './routes/adminExtended.routes';
 
 dotenv.config();
 
@@ -52,6 +59,13 @@ app.use(`${apiPrefix}/finops`, finopsRoutes);
 app.use(`${apiPrefix}/reports`, reportsRoutes);
 app.use(`${apiPrefix}/sop`, sopRoutes);
 app.use(`${apiPrefix}/admin`, adminRoutes);
+app.use(`${apiPrefix}/timeline`, timelineRoutes);
+app.use(`${apiPrefix}/evidence`, evidenceRoutes);
+app.use(`${apiPrefix}/assets`, assetsRoutes);
+app.use(`${apiPrefix}/recommendations`, recommendationsRoutes);
+app.use(`${apiPrefix}/aiops`, aiopsRoutes);
+app.use(`${apiPrefix}/sop-executions`, sopExecutionRoutes);
+app.use(`${apiPrefix}/admin-extended`, adminExtendedRoutes);
 
 // Error handling
 app.use(notFoundHandler);

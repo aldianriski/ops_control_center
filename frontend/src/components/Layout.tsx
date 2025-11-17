@@ -1,5 +1,7 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import EnvironmentSwitcher from './EnvironmentSwitcher';
+import TeamSwitcher from './TeamSwitcher';
 import {
   LayoutDashboard,
   Server,
@@ -7,6 +9,7 @@ import {
   FileText,
   BookOpen,
   LogOut,
+  Shield,
 } from 'lucide-react';
 
 const Layout = () => {
@@ -15,6 +18,7 @@ const Layout = () => {
   const navItems = [
     { to: '/', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/infra', label: 'InfraOps', icon: Server },
+    { to: '/secops', label: 'SecOps', icon: Shield },
     { to: '/finops', label: 'FinOps', icon: DollarSign },
     { to: '/reports', label: 'Reports', icon: FileText },
     { to: '/sops', label: 'SOPs', icon: BookOpen },
@@ -30,6 +34,8 @@ const Layout = () => {
               Edot Ops Control Center
             </h1>
             <div className="flex items-center gap-4">
+              <TeamSwitcher />
+              <EnvironmentSwitcher />
               <span className="text-sm text-gray-600">{user?.name}</span>
               <button
                 onClick={logout}

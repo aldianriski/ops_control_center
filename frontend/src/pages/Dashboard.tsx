@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { dashboardApi } from '../api';
 import KPICard from '../components/KPICard';
+import UnifiedTimeline from '../components/UnifiedTimeline';
+import SkeletonLoader from '../components/SkeletonLoader';
 import {
   AlertCircle,
   CheckCircle,
@@ -17,8 +19,10 @@ const Dashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-gray-500">Loading dashboard...</div>
+      <div className="space-y-6">
+        <SkeletonLoader type="card" count={4} />
+        <SkeletonLoader type="card" count={1} />
+        <SkeletonLoader type="list" count={5} />
       </div>
     );
   }
@@ -83,6 +87,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Unified Timeline */}
+      <UnifiedTimeline />
 
       {/* Quick Links */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

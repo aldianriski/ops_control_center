@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import InfraOps from './pages/InfraOps';
+import SecOps from './pages/SecOps';
 import FinOps from './pages/FinOps';
 import Reports from './pages/Reports';
 import SOPs from './pages/SOPs';
@@ -34,6 +35,7 @@ function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="infra" element={<InfraOps />} />
+          <Route path="secops" element={<SecOps />} />
           <Route path="finops" element={<FinOps />} />
           <Route path="reports" element={<Reports />} />
           <Route path="sops" element={<SOPs />} />
