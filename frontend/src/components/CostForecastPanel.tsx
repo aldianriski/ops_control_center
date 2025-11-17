@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { finopsApi } from '../api';
 import { generateForecast, analyzeCostTrends, ForecastDataPoint } from '../services/forecastService';
 import {
-  LineChart,
   Line,
   XAxis,
   YAxis,

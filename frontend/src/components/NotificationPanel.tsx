@@ -43,13 +43,6 @@ const NotificationPanel = ({ isOpen, onClose }: NotificationPanelProps) => {
     error: <AlertCircle size={20} className="text-red-500" />,
   };
 
-  const typeColors: Record<NotificationType, string> = {
-    info: 'bg-blue-50 border-blue-200',
-    success: 'bg-green-50 border-green-200',
-    warning: 'bg-yellow-50 border-yellow-200',
-    error: 'bg-red-50 border-red-200',
-  };
-
   const priorityBadges: Record<string, string> = {
     urgent: 'bg-red-600 text-white',
     high: 'bg-orange-500 text-white',

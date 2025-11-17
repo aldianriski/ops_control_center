@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Shield, Plus, Edit, Trash2, Check, X, Users, Key as KeyIcon } from 'lucide-react';
+import { Shield, Plus, Edit, Trash2, Users, Key as KeyIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface Permission {
@@ -139,7 +139,7 @@ const RBACManagement = () => {
   });
 
   const updateRoleMutation = useMutation({
-    mutationFn: async ({ id, updates }: { id: string; updates: Partial<Role> }) => {
+    mutationFn: async ({ id: _id, updates }: { id: string; updates: Partial<Role> }) => {
       // API call would go here
       toast.success('Role updated successfully');
       return updates;
@@ -151,7 +151,7 @@ const RBACManagement = () => {
   });
 
   const deleteRoleMutation = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (_id: string) => {
       // API call would go here
       toast.success('Role deleted successfully');
     },

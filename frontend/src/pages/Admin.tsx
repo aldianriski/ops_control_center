@@ -12,7 +12,6 @@ import {
   FileText,
   Plus,
   Trash2,
-  Edit,
   Copy,
   CheckCircle,
   Settings,
@@ -68,7 +67,6 @@ const Admin = () => {
 
   // API Tokens
   const [newToken, setNewToken] = useState({ name: '', scopes: [] as string[] });
-  const [editingToken, setEditingToken] = useState<APIToken | null>(null);
 
   // Alert Thresholds
   const [newThreshold, setNewThreshold] = useState({

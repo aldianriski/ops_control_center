@@ -7,14 +7,11 @@ import toast from 'react-hot-toast';
 
 const DashboardBuilder: React.FC = () => {
   const {
-    dashboards,
-    activeDashboardId,
     isEditMode,
     setEditMode,
     getActiveDashboard,
     addWidget,
     removeWidget,
-    updateWidget,
   } = useDashboardStore();
 
   const [showWidgetSelector, setShowWidgetSelector] = useState(false);

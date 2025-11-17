@@ -13,7 +13,7 @@ interface RateLimitIndicatorProps {
   showDetails?: boolean;
 }
 
-const RateLimitIndicator = ({ position = 'header', showDetails = false }: RateLimitIndicatorProps) => {
+const RateLimitIndicator = ({ position = 'header', showDetails: _showDetails = false }: RateLimitIndicatorProps) => {
   const [rateLimitInfo, setRateLimitInfo] = useState<RateLimitInfo>({
     limit: 1000,
     remaining: 847,

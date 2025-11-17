@@ -6,7 +6,6 @@ import {
   CheckCircle,
   Circle,
   Clock,
-  AlertCircle,
   Paperclip,
   User,
   Calendar,

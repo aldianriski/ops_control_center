@@ -18,7 +18,7 @@ interface IncidentCommentsProps {
   incidentTitle: string;
 }
 
-const IncidentComments: React.FC<IncidentCommentsProps> = ({ incidentId, incidentTitle }) => {
+const IncidentComments: React.FC<IncidentCommentsProps> = ({ incidentId: _incidentId, incidentTitle: _incidentTitle }) => {
   const { user } = useAuthStore();
   const [comments, setComments] = useState<Comment[]>([
     {
@@ -199,7 +199,7 @@ const IncidentComments: React.FC<IncidentCommentsProps> = ({ incidentId, inciden
               Participants
             </p>
             <div className="flex flex-wrap gap-2">
-              {Array.from(new Set(comments.map(c => c.authorEmail))).map((email, index) => {
+              {Array.from(new Set(comments.map(c => c.authorEmail))).map((email) => {
                 const comment = comments.find(c => c.authorEmail === email);
                 return (
                   <div

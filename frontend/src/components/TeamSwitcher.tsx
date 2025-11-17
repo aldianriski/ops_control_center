@@ -17,8 +17,6 @@ const TeamSwitcher = () => {
     }
   }, [data, setTeams]);
 
-  const selectedTeamObj = teams.find((t) => t.name === selectedTeam);
-
   return (
     <div className="flex gap-2">
       {teams.map((team) => (

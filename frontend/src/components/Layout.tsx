@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useNotificationStore } from '../store/notificationStore';
 import { useWebSocket, WebSocketMessage } from '../hooks/useWebSocket';
@@ -35,7 +35,7 @@ const Layout = () => {
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
 
   // WebSocket connection
-  const { connectionStatus, isConnected, lastMessage } = useWebSocket({
+  const { connectionStatus, isConnected } = useWebSocket({
     autoConnect: true,
     onMessage: (message: WebSocketMessage) => {
       // Handle different message types

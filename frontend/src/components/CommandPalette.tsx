@@ -6,8 +6,6 @@ import { infraApi, sopApi } from '../api';
 import { assetsApi } from '../api/extended';
 import {
   Search,
-  Clock,
-  X,
   Terminal,
   FileText,
   ServerIcon,
@@ -15,8 +13,6 @@ import {
   ClipboardList,
   HomeIcon,
   BarChart,
-  DollarSign,
-  ShieldCheck,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 

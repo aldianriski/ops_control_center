@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { aiopsApi } from '../api/extended';
 import { useAppStore } from '../store/appStore';
-import { Sparkles, TrendingUp, AlertCircle, DollarSign, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, TrendingUp, AlertCircle, X } from 'lucide-react';
 
 const AIOpsAssistant = () => {
   const { selectedEnvironment } = useAppStore();

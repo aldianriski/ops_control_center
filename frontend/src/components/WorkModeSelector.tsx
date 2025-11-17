@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAppStore } from '../store/appStore';
 import {
   Activity,
   AlertOctagon,

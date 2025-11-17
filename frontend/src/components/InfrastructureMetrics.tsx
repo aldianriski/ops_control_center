@@ -23,7 +23,7 @@ const InfrastructureMetrics = () => {
   const { selectedEnvironment } = useAppStore();
   const [timeRange, setTimeRange] = useState<'1h' | '6h' | '24h' | '7d'>('24h');
 
-  const { data: metrics, isLoading } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ['infra-metrics', selectedEnvironment, timeRange],
     queryFn: () => evidenceApi.getMetrics({ environment: selectedEnvironment, hours: '24' }),
   });

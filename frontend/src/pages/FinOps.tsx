@@ -5,7 +5,7 @@ import FinOpsRecommendations from '../components/FinOpsRecommendations';
 import CostForecastPanel from '../components/CostForecastPanel';
 import TableFilter, { FilterState } from '../components/TableFilter';
 import SavedFilterViews from '../components/SavedFilterViews';
-import { DollarSign, TrendingUp, CreditCard } from 'lucide-react';
+import { DollarSign, TrendingUp } from 'lucide-react';
 import { useState } from 'react';
 
 const FinOps = () => {
