@@ -2,12 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import { finopsApi } from '../api';
 import KPICard from '../components/KPICard';
 import FinOpsRecommendations from '../components/FinOpsRecommendations';
-import TableFilter from '../components/TableFilter';
+import TableFilter, { FilterState } from '../components/TableFilter';
+import SavedFilterViews from '../components/SavedFilterViews';
 import { DollarSign, TrendingUp, CreditCard } from 'lucide-react';
 import { useState } from 'react';
 
 const FinOps = () => {
   const [filteredCostBreakdown, setFilteredCostBreakdown] = useState<any[]>([]);
+  const [costFilterState, setCostFilterState] = useState<FilterState>({ searchQuery: '', activeFilters: {} });
+  const [externalCostFilter, setExternalCostFilter] = useState<FilterState | null>(null);
 
   const { data: summary } = useQuery({
     queryKey: ['finops-summary'],
@@ -26,11 +29,18 @@ const FinOps = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">FinOps</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          AWS cost tracking, forecasting, and budget management
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">FinOps</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            AWS cost tracking, forecasting, and budget management
+          </p>
+        </div>
+        <SavedFilterViews
+          page="finops"
+          currentFilters={costFilterState}
+          onLoadFilters={(filters) => setExternalCostFilter(filters as FilterState)}
+        />
       </div>
 
       {/* KPI Cards */}
@@ -96,6 +106,8 @@ const FinOps = () => {
               { key: 'ics_credits_applied', label: 'ICS Credits', filterable: false },
             ]}
             onFilteredDataChange={setFilteredCostBreakdown}
+            onFilterStateChange={setCostFilterState}
+            externalFilterState={externalCostFilter}
             placeholder="Search cost records..."
           />
         </div>

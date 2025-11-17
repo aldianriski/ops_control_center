@@ -1,21 +1,43 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 import { dashboardApi } from '../api';
 import KPICard from '../components/KPICard';
 import UnifiedTimeline from '../components/UnifiedTimeline';
 import SkeletonLoader from '../components/SkeletonLoader';
+import DashboardSelector from '../components/DashboardSelector';
+import DashboardBuilder from '../components/DashboardBuilder';
+import useDashboardStore from '../store/dashboardStore';
 import {
   AlertCircle,
   CheckCircle,
   DollarSign,
   TrendingDown,
   CreditCard,
+  LayoutDashboard,
+  BarChart3,
 } from 'lucide-react';
 
 const Dashboard = () => {
+  const [activeView, setActiveView] = useState<'overview' | 'custom'>('overview');
+  const { dashboards, addDashboard } = useDashboardStore();
+
   const { data: summary, isLoading } = useQuery({
     queryKey: ['dashboard-summary'],
     queryFn: dashboardApi.getSummary,
   });
+
+  // Initialize with a default dashboard if none exists
+  useEffect(() => {
+    if (dashboards.length === 0) {
+      addDashboard({
+        name: 'My Dashboard',
+        description: 'Personalized operational dashboard',
+        isDefault: true,
+        widgets: [],
+        layout: [],
+      });
+    }
+  }, [dashboards.length, addDashboard]);
 
   if (isLoading) {
     return (
@@ -29,12 +51,50 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Real-time operational visibility across InfraOps, SecOps, and FinOps
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Real-time operational visibility across InfraOps, SecOps, and FinOps
+          </p>
+        </div>
+
+        {/* View Switcher */}
+        <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+          <button
+            onClick={() => setActiveView('overview')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              activeView === 'overview'
+                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <BarChart3 className="w-5 h-5" />
+            <span className="font-medium">Overview</span>
+          </button>
+          <button
+            onClick={() => setActiveView('custom')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+              activeView === 'custom'
+                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+            }`}
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            <span className="font-medium">Custom</span>
+          </button>
+        </div>
       </div>
+
+      {/* Conditional Rendering based on active view */}
+      {activeView === 'custom' ? (
+        <>
+          <DashboardSelector />
+          <DashboardBuilder />
+        </>
+      ) : (
+        <>
+          {/* Original Overview Content */}
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -130,6 +190,8 @@ const Dashboard = () => {
           </a>
         </div>
       </div>
+        </>
+      )}
     </div>
   );
 };

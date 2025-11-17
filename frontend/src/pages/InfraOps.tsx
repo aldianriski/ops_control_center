@@ -3,7 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { infraApi } from '../api';
 import EvidencePanel from '../components/EvidencePanel';
 import InfrastructureMetrics from '../components/InfrastructureMetrics';
-import TableFilter from '../components/TableFilter';
+import TableFilter, { FilterState } from '../components/TableFilter';
+import SavedFilterViews from '../components/SavedFilterViews';
 import ConnectionStatusBadge from '../components/ConnectionStatusBadge';
 import { exportToCSV } from '../utils/export';
 import { useWebSocket, WebSocketMessage } from '../hooks/useWebSocket';
@@ -19,6 +20,10 @@ const InfraOps = () => {
   const [isEvidencePanelOpen, setIsEvidencePanelOpen] = useState(false);
   const [filteredIncidents, setFilteredIncidents] = useState<any[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<any[]>([]);
+  const [incidentsFilterState, setIncidentsFilterState] = useState<FilterState>({ searchQuery: '', activeFilters: {} });
+  const [tasksFilterState, setTasksFilterState] = useState<FilterState>({ searchQuery: '', activeFilters: {} });
+  const [externalIncidentsFilter, setExternalIncidentsFilter] = useState<FilterState | null>(null);
+  const [externalTasksFilter, setExternalTasksFilter] = useState<FilterState | null>(null);
 
   const setActiveTab = (tab: 'incidents' | 'tasks' | 'sla' | 'metrics') => {
     setSearchParams({ tab });
@@ -126,15 +131,30 @@ const InfraOps = () => {
             Manage incidents, tasks, and track SLA performance
           </p>
         </div>
-        {activeTab !== 'metrics' && (
-          <button
-            onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-          >
-            <Download size={16} />
-            Export to CSV
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {(activeTab === 'incidents' || activeTab === 'tasks') && (
+            <SavedFilterViews
+              page="infraops"
+              currentFilters={activeTab === 'incidents' ? incidentsFilterState : tasksFilterState}
+              onLoadFilters={(filters) => {
+                if (activeTab === 'incidents') {
+                  setExternalIncidentsFilter(filters as FilterState);
+                } else {
+                  setExternalTasksFilter(filters as FilterState);
+                }
+              }}
+            />
+          )}
+          {activeTab !== 'metrics' && (
+            <button
+              onClick={handleExport}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+            >
+              <Download size={16} />
+              Export to CSV
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Tabs */}
@@ -175,6 +195,8 @@ const InfraOps = () => {
                   { key: 'squad', label: 'Squad', filterable: true },
                 ]}
                 onFilteredDataChange={setFilteredIncidents}
+                onFilterStateChange={setIncidentsFilterState}
+                externalFilterState={externalIncidentsFilter}
                 placeholder="Search incidents..."
               />
             </div>
@@ -262,6 +284,8 @@ const InfraOps = () => {
                   { key: 'assignee', label: 'Assignee', filterable: true },
                 ]}
                 onFilteredDataChange={setFilteredTasks}
+                onFilterStateChange={setTasksFilterState}
+                externalFilterState={externalTasksFilter}
                 placeholder="Search tasks..."
               />
             </div>

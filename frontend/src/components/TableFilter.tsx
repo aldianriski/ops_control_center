@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search, Filter, X } from 'lucide-react';
 
 interface Column {
@@ -7,11 +7,18 @@ interface Column {
   filterable?: boolean;
 }
 
+export interface FilterState {
+  searchQuery: string;
+  activeFilters: Record<string, string>;
+}
+
 interface TableFilterProps<T> {
   data: T[];
   columns: Column[];
   onFilteredDataChange: (filteredData: T[]) => void;
   placeholder?: string;
+  onFilterStateChange?: (filterState: FilterState) => void;
+  externalFilterState?: FilterState | null;
 }
 
 function TableFilter<T extends Record<string, any>>({
@@ -19,9 +26,26 @@ function TableFilter<T extends Record<string, any>>({
   columns,
   onFilteredDataChange,
   placeholder = 'Search...',
+  onFilterStateChange,
+  externalFilterState,
 }: TableFilterProps<T>) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilters, setActiveFilters] = useState<Record<string, string>>({});
+
+  // Apply external filter state when loaded from saved views
+  useEffect(() => {
+    if (externalFilterState) {
+      setSearchQuery(externalFilterState.searchQuery || '');
+      setActiveFilters(externalFilterState.activeFilters || {});
+    }
+  }, [externalFilterState]);
+
+  // Notify parent of filter state changes
+  useEffect(() => {
+    if (onFilterStateChange) {
+      onFilterStateChange({ searchQuery, activeFilters });
+    }
+  }, [searchQuery, activeFilters, onFilterStateChange]);
   const [showFilters, setShowFilters] = useState(false);
 
   // Get unique values for each filterable column

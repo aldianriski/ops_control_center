@@ -4,7 +4,8 @@ import { useAppStore } from '../store/appStore';
 import { assetsApi } from '../api/extended';
 import VulnerabilityCharts from '../components/VulnerabilityCharts';
 import MitreAttackMapping from '../components/MitreAttackMapping';
-import TableFilter from '../components/TableFilter';
+import TableFilter, { FilterState } from '../components/TableFilter';
+import SavedFilterViews from '../components/SavedFilterViews';
 import ConnectionStatusBadge from '../components/ConnectionStatusBadge';
 import { exportToCSV } from '../utils/export';
 import { useWebSocket, WebSocketMessage } from '../hooks/useWebSocket';
@@ -19,6 +20,8 @@ const SecOps = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = (searchParams.get('tab') as 'vulnerabilities' | 'assets' | 'incidents' | 'mitre') || 'assets';
   const [filteredAssets, setFilteredAssets] = useState<any[]>([]);
+  const [assetsFilterState, setAssetsFilterState] = useState<FilterState>({ searchQuery: '', activeFilters: {} });
+  const [externalAssetsFilter, setExternalAssetsFilter] = useState<FilterState | null>(null);
 
   const setActiveTab = (tab: 'vulnerabilities' | 'assets' | 'incidents' | 'mitre') => {
     setSearchParams({ tab });
@@ -88,15 +91,24 @@ const SecOps = () => {
             Manage assets, vulnerabilities, and security incidents
           </p>
         </div>
-        {activeTab === 'assets' && (
-          <button
-            onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-          >
-            <Download size={16} />
-            Export to CSV
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {activeTab === 'assets' && (
+            <>
+              <SavedFilterViews
+                page="secops"
+                currentFilters={assetsFilterState}
+                onLoadFilters={(filters) => setExternalAssetsFilter(filters as FilterState)}
+              />
+              <button
+                onClick={handleExport}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+              >
+                <Download size={16} />
+                Export to CSV
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Tabs */}
@@ -137,6 +149,8 @@ const SecOps = () => {
                     { key: 'owner', label: 'Owner', filterable: true },
                   ]}
                   onFilteredDataChange={setFilteredAssets}
+                  onFilterStateChange={setAssetsFilterState}
+                  externalFilterState={externalAssetsFilter}
                   placeholder="Search assets..."
                 />
               </div>
