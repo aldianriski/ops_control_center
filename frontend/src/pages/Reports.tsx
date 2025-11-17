@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { reportsApi } from '../api';
 import ReportVersionHistory from '../components/ReportVersionHistory';
+import ReportScheduleManager from '../components/ReportScheduleManager';
 import { FileText, Download } from 'lucide-react';
 import { useState } from 'react';
 
@@ -122,6 +123,11 @@ const Reports = () => {
       {/* Version History */}
       <div>
         <ReportVersionHistory reportId="weekly-ops-001" reportName="Weekly Operations Report" />
+      </div>
+
+      {/* Report Scheduling */}
+      <div>
+        <ReportScheduleManager />
       </div>
     </div>
   );

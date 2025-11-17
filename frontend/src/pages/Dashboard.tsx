@@ -6,6 +6,7 @@ import UnifiedTimeline from '../components/UnifiedTimeline';
 import SkeletonLoader from '../components/SkeletonLoader';
 import DashboardSelector from '../components/DashboardSelector';
 import DashboardBuilder from '../components/DashboardBuilder';
+import GrafanaDashboard from '../components/GrafanaDashboard';
 import useDashboardStore from '../store/dashboardStore';
 import {
   AlertCircle,
@@ -147,6 +148,15 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Grafana Dashboard Integration */}
+      <GrafanaDashboard
+        title="System Performance Metrics"
+        dashboardId="system-overview"
+        height={450}
+        refresh="30s"
+        timeRange={{ from: 'now-6h', to: 'now' }}
+      />
 
       {/* Unified Timeline */}
       <UnifiedTimeline />

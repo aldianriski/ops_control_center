@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { finopsApi } from '../api';
 import KPICard from '../components/KPICard';
 import FinOpsRecommendations from '../components/FinOpsRecommendations';
+import CostForecastPanel from '../components/CostForecastPanel';
 import TableFilter, { FilterState } from '../components/TableFilter';
 import SavedFilterViews from '../components/SavedFilterViews';
 import { DollarSign, TrendingUp, CreditCard } from 'lucide-react';
@@ -89,6 +90,9 @@ const FinOps = () => {
           </div>
         </div>
       </div>
+
+      {/* Cost Forecast & Anomaly Detection */}
+      <CostForecastPanel />
 
       {/* Cost Breakdown */}
       <div className="bg-white rounded-lg shadow">
