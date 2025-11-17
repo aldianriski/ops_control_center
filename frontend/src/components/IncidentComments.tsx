@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { ChatBubbleLeftRightIcon, PaperAirplaneIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { MessageCircle, Send, UserCircleIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface Comment {
@@ -109,7 +109,7 @@ const IncidentComments: React.FC<IncidentCommentsProps> = ({ incidentId, inciden
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-3">
-          <ChatBubbleLeftRightIcon className="w-5 h-5 text-gray-500" />
+          <MessageCircle className="w-5 h-5 text-gray-500" />
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
               Team Collaboration
@@ -129,7 +129,7 @@ const IncidentComments: React.FC<IncidentCommentsProps> = ({ incidentId, inciden
         <div className="p-4 space-y-4">
           {comments.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
-              <ChatBubbleLeftRightIcon className="w-12 h-12 mx-auto mb-2 text-gray-400" />
+              <MessageCircle className="w-12 h-12 mx-auto mb-2 text-gray-400" />
               <p>No comments yet. Start the conversation!</p>
             </div>
           ) : (
@@ -185,7 +185,7 @@ const IncidentComments: React.FC<IncidentCommentsProps> = ({ incidentId, inciden
                     disabled={!newComment.trim()}
                     className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                   >
-                    <PaperAirplaneIcon className="w-4 h-4" />
+                    <Send className="w-4 h-4" />
                     <span>Send</span>
                   </button>
                 </div>

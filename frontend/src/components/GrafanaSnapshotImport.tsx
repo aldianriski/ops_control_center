@@ -29,7 +29,7 @@ const GrafanaSnapshotImport = ({ incidentId, onClose }: GrafanaSnapshotImportPro
   } | null>(null);
 
   const importMutation = useMutation({
-    mutationFn: evidenceApi.createEvidence,
+    mutationFn: evidenceApi.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['evidence', incidentId] });
       setSnapshotUrl('');

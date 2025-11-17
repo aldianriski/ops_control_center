@@ -59,7 +59,7 @@ const SOPExecutionMode = ({ sopId, sopTitle, steps, isOpen, onClose }: SOPExecut
   });
 
   const startExecutionMutation = useMutation({
-    mutationFn: sopExecutionApi.startExecution,
+    mutationFn: sopExecutionApi.start,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['sop-executions', sopId] });
       setActiveExecution(data);
@@ -68,7 +68,7 @@ const SOPExecutionMode = ({ sopId, sopTitle, steps, isOpen, onClose }: SOPExecut
 
   const updateExecutionMutation = useMutation({
     mutationFn: ({ executionId, updates }: { executionId: string; updates: any }) =>
-      sopExecutionApi.updateExecution(executionId, updates),
+      sopExecutionApi.update(executionId, updates),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['sop-executions', sopId] });
     },

@@ -16,13 +16,13 @@ import {
   ReferenceLine,
 } from 'recharts';
 import {
-  ChartBarIcon,
-  ExclamationTriangleIcon,
+  BarChart,
+  AlertTriangle,
   TrendingUpIcon,
   TrendingDownIcon,
   MinusIcon,
-  LightBulbIcon,
-} from '@heroicons/react/24/outline';
+  Lightbulb,
+} from 'lucide-react';
 
 const CostForecastPanel: React.FC = () => {
   const { data: costBreakdown, isLoading } = useQuery({
@@ -71,7 +71,7 @@ const CostForecastPanel: React.FC = () => {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
         <div className="text-center text-gray-500">
-          <ChartBarIcon className="w-12 h-12 mx-auto mb-2 text-gray-400" />
+          <BarChart className="w-12 h-12 mx-auto mb-2 text-gray-400" />
           <p>Insufficient data for forecasting</p>
         </div>
       </div>
@@ -153,7 +153,7 @@ const CostForecastPanel: React.FC = () => {
               {forecastResult.anomalies.length}
             </p>
             {forecastResult.anomalies.length > 0 && (
-              <ExclamationTriangleIcon className="w-5 h-5 text-orange-600" />
+              <AlertTriangle className="w-5 h-5 text-orange-600" />
             )}
           </div>
         </div>
@@ -241,7 +241,7 @@ const CostForecastPanel: React.FC = () => {
       {trendAnalysis && trendAnalysis.insights.length > 0 && (
         <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
           <div className="flex items-start gap-3">
-            <LightBulbIcon className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+            <Lightbulb className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">AI Insights</p>
               <ul className="space-y-1">
@@ -260,7 +260,7 @@ const CostForecastPanel: React.FC = () => {
       {forecastResult.anomalies.length > 0 && (
         <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
           <div className="flex items-start gap-3">
-            <ExclamationTriangleIcon className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-900 dark:text-white mb-2">Recent Anomalies</p>
               <div className="space-y-2">

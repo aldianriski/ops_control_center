@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAppStore } from '../store/appStore';
 import useComparisonStore from '../store/comparisonStore';
 import { adminExtendedApi } from '../api/extended';
-import { ChevronDown, ArrowsRightLeftIcon } from 'lucide-react';
+import { ChevronDown, ArrowRightLeft } from 'lucide-react';
 
 const EnvironmentSwitcher = () => {
   const { selectedEnvironment, setEnvironment, environments, setEnvironments } = useAppStore();
@@ -50,7 +50,7 @@ const EnvironmentSwitcher = () => {
             className="p-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-md transition-colors"
             title="Compare environments"
           >
-            <ArrowsRightLeftIcon className="w-4 h-4" />
+            <ArrowRightLeft className="w-4 h-4" />
           </button>
         </div>
       ) : (
@@ -59,7 +59,7 @@ const EnvironmentSwitcher = () => {
             onClick={() => setShowMenu(!showMenu)}
             className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors"
           >
-            <ArrowsRightLeftIcon className="w-4 h-4" />
+            <ArrowRightLeft className="w-4 h-4" />
             <span>Compare ({selectedEnvironments.length})</span>
             <ChevronDown className="w-4 h-4" />
           </button>

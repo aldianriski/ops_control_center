@@ -4,12 +4,12 @@ import useComparisonStore, { ComparisonMetric } from '../store/comparisonStore';
 import { infraApi, finopsApi } from '../api';
 import { assetsApi } from '../api/extended';
 import {
-  ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
-  MinusIcon,
-  XMarkIcon,
-  ArrowsRightLeftIcon,
-} from '@heroicons/react/24/outline';
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  X,
+  ArrowRightLeft,
+} from 'lucide-react';
 
 const EnvironmentComparison: React.FC = () => {
   const { selectedEnvironments, comparisonType, isComparisonMode, setComparisonMode, clearSelection, toggleEnvironment } = useComparisonStore();
@@ -169,9 +169,9 @@ const EnvironmentComparison: React.FC = () => {
   };
 
   const getTrendIcon = (current: number, previous: number) => {
-    if (current > previous) return <ArrowTrendingUpIcon className="w-4 h-4 text-red-600" />;
-    if (current < previous) return <ArrowTrendingDownIcon className="w-4 h-4 text-green-600" />;
-    return <MinusIcon className="w-4 h-4 text-gray-400" />;
+    if (current > previous) return <TrendingUp className="w-4 h-4 text-red-600" />;
+    if (current < previous) return <TrendingDown className="w-4 h-4 text-green-600" />;
+    return <Minus className="w-4 h-4 text-gray-400" />;
   };
 
   const metrics = getMetrics();
@@ -183,7 +183,7 @@ const EnvironmentComparison: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <ArrowsRightLeftIcon className="w-5 h-5 text-indigo-600" />
+            <ArrowRightLeft className="w-5 h-5 text-indigo-600" />
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Environment Comparison
             </h3>
@@ -210,7 +210,7 @@ const EnvironmentComparison: React.FC = () => {
               className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               title="Close comparison"
             >
-              <XMarkIcon className="w-5 h-5" />
+              <X className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -235,7 +235,7 @@ const EnvironmentComparison: React.FC = () => {
                         className="ml-2 text-gray-400 hover:text-red-600 transition-colors"
                         title="Remove"
                       >
-                        <XMarkIcon className="w-4 h-4" />
+                        <X className="w-4 h-4" />
                       </button>
                     </div>
                   </th>

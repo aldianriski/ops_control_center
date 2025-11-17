@@ -36,12 +36,12 @@ const EvidencePanel = ({ incidentId, isOpen, onClose }: EvidencePanelProps) => {
 
   const { data: evidence = [], isLoading } = useQuery({
     queryKey: ['evidence', incidentId],
-    queryFn: () => evidenceApi.getEvidence(incidentId),
+    queryFn: () => evidenceApi.getByIncident(incidentId),
     enabled: isOpen && !!incidentId,
   });
 
   const createEvidenceMutation = useMutation({
-    mutationFn: evidenceApi.createEvidence,
+    mutationFn: evidenceApi.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['evidence', incidentId] });
       setNewEvidence({ evidence_type: 'log', title: '', description: '', file_url: '' });

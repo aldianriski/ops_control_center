@@ -1,5 +1,5 @@
 import React from 'react';
-import { XMarkIcon, Cog6ToothIcon, ArrowsPointingOutIcon } from '@heroicons/react/24/outline';
+import { X, Cog6ToothIcon, ArrowsPointingOutIcon } from 'lucide-react';
 
 interface WidgetWrapperProps {
   title: string;
@@ -71,7 +71,7 @@ const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
               className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
               title="Remove"
             >
-              <XMarkIcon className="w-4 h-4" />
+              <X className="w-4 h-4" />
             </button>
           )}
         </div>

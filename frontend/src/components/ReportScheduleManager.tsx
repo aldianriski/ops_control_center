@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import useReportScheduleStore, { ReportSchedule, ReportFormat, ScheduleFrequency } from '../store/reportScheduleStore';
 import {
-  CalendarIcon,
-  ClockIcon,
-  PlusIcon,
-  PencilIcon,
-  TrashIcon,
-  PaperAirplaneIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-} from '@heroicons/react/24/outline';
+  Calendar,
+  Clock,
+  Plus,
+  Edit,
+  Trash2,
+  Send,
+  CheckCircle,
+  XCircle,
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const ReportScheduleManager: React.FC = () => {
@@ -142,7 +142,7 @@ const ReportScheduleManager: React.FC = () => {
           onClick={() => setShowCreateDialog(true)}
           className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
         >
-          <PlusIcon className="w-5 h-5" />
+          <Plus className="w-5 h-5" />
           <span>New Schedule</span>
         </button>
       </div>
@@ -151,7 +151,7 @@ const ReportScheduleManager: React.FC = () => {
       <div className="space-y-3">
         {schedules.length === 0 ? (
           <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-8 text-center">
-            <CalendarIcon className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+            <Calendar className="w-12 h-12 mx-auto mb-3 text-gray-400" />
             <p className="text-gray-500 dark:text-gray-400">No scheduled reports yet</p>
             <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
               Create a schedule to automate report generation
@@ -189,11 +189,11 @@ const ReportScheduleManager: React.FC = () => {
 
                   <div className="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center gap-1">
-                      <ClockIcon className="w-4 h-4" />
+                      <Clock className="w-4 h-4" />
                       <span>{getFrequencyText(schedule)}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <PaperAirplaneIcon className="w-4 h-4" />
+                      <Send className="w-4 h-4" />
                       <span>{schedule.recipients.length} recipient{schedule.recipients.length !== 1 ? 's' : ''}</span>
                     </div>
                   </div>
@@ -217,9 +217,9 @@ const ReportScheduleManager: React.FC = () => {
                     title={schedule.enabled ? 'Pause' : 'Resume'}
                   >
                     {schedule.enabled ? (
-                      <CheckCircleIcon className="w-5 h-5" />
+                      <CheckCircle className="w-5 h-5" />
                     ) : (
-                      <XCircleIcon className="w-5 h-5" />
+                      <XCircle className="w-5 h-5" />
                     )}
                   </button>
                   <button
@@ -227,14 +227,14 @@ const ReportScheduleManager: React.FC = () => {
                     className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
                     title="Edit"
                   >
-                    <PencilIcon className="w-5 h-5" />
+                    <Edit className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => handleDelete(schedule.id)}
                     className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                     title="Delete"
                   >
-                    <TrashIcon className="w-5 h-5" />
+                    <Trash2 className="w-5 h-5" />
                   </button>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { FunnelIcon, BookmarkIcon, TrashIcon, PencilIcon, DocumentDuplicateIcon, ShareIcon } from '@heroicons/react/24/outline';
-import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid';
+import { Filter, BookmarkIcon, Trash2, Edit, Copy, ShareIcon } from 'lucide-react';
+import { BookmarkIcon as BookmarkSolidIcon } from 'lucide-react';
 import useFilterViewsStore, { FilterView } from '../store/filterViewsStore';
 import toast from 'react-hot-toast';
 
@@ -108,7 +108,7 @@ const SavedFilterViews: React.FC<SavedFilterViewsProps> = ({
             : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
         }`}
       >
-        {activeView ? <BookmarkSolidIcon className="w-5 h-5" /> : <FunnelIcon className="w-5 h-5" />}
+        {activeView ? <BookmarkSolidIcon className="w-5 h-5" /> : <Filter className="w-5 h-5" />}
         <span className="font-medium">
           {activeView ? activeView.name : 'Saved Filters'}
         </span>
@@ -143,7 +143,7 @@ const SavedFilterViews: React.FC<SavedFilterViewsProps> = ({
           <div className="max-h-96 overflow-y-auto">
             {pageViews.length === 0 ? (
               <div className="p-8 text-center">
-                <FunnelIcon className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                <Filter className="w-12 h-12 mx-auto mb-3 text-gray-400" />
                 <p className="text-gray-500 dark:text-gray-400">No saved filters yet</p>
                 <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
                   Apply filters and click "Save Current" to create your first view
@@ -191,21 +191,21 @@ const SavedFilterViews: React.FC<SavedFilterViewsProps> = ({
                           className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded transition-colors"
                           title="Edit"
                         >
-                          <PencilIcon className="w-4 h-4" />
+                          <Edit className="w-4 h-4" />
                         </button>
                         <button
                           onClick={(e) => handleDuplicateView(view, e)}
                           className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
                           title="Duplicate"
                         >
-                          <DocumentDuplicateIcon className="w-4 h-4" />
+                          <Copy className="w-4 h-4" />
                         </button>
                         <button
                           onClick={(e) => handleDeleteView(view, e)}
                           className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                           title="Delete"
                         >
-                          <TrashIcon className="w-4 h-4" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>

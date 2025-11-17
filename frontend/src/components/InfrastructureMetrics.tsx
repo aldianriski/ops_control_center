@@ -34,7 +34,7 @@ const InfrastructureMetrics = () => {
 
   const { data: metrics, isLoading } = useQuery({
     queryKey: ['infra-metrics', selectedEnvironment, timeRange],
-    queryFn: () => evidenceApi.getInfraMetrics({ environment: selectedEnvironment, hours: 24 }),
+    queryFn: () => evidenceApi.getMetrics({ environment: selectedEnvironment, hours: 24 }),
   });
 
   // Mock data for demonstration

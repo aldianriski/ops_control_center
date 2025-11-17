@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChartBarSquareIcon, ArrowsPointingOutIcon, ArrowPathIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { BarChart3, Maximize, RefreshCw, Settings } from 'lucide-react';
 
 interface GrafanaDashboardProps {
   dashboardId?: string;
@@ -69,7 +69,7 @@ const GrafanaDashboard: React.FC<GrafanaDashboardProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
           <div className="flex items-center gap-3">
-            <ChartBarSquareIcon className="w-5 h-5 text-indigo-600" />
+            <BarChart3 className="w-5 h-5 text-indigo-600" />
             <div>
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">{title}</h3>
               <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -84,21 +84,21 @@ const GrafanaDashboard: React.FC<GrafanaDashboardProps> = ({
               className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
               title="Refresh"
             >
-              <ArrowPathIcon className="w-4 h-4" />
+              <RefreshCw className="w-4 h-4" />
             </button>
             <button
               onClick={() => setShowSettings(!showSettings)}
               className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
               title="Settings"
             >
-              <Cog6ToothIcon className="w-4 h-4" />
+              <Settings className="w-4 h-4" />
             </button>
             <button
               onClick={handleFullscreen}
               className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg transition-colors"
               title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
             >
-              <ArrowsPointingOutIcon className="w-4 h-4" />
+              <Maximize className="w-4 h-4" />
             </button>
           </div>
         </div>

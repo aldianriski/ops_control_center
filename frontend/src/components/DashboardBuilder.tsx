@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import useDashboardStore, { WidgetType } from '../store/dashboardStore';
 import KPIWidget from './widgets/KPIWidget';
 import RecentIncidentsWidget from './widgets/RecentIncidentsWidget';
-import { PlusIcon, PencilIcon, CheckIcon, Squares2X2Icon } from '@heroicons/react/24/outline';
+import { Plus, Edit, Check, LayoutGrid } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const DashboardBuilder: React.FC = () => {
@@ -139,7 +139,7 @@ const DashboardBuilder: React.FC = () => {
         return (
           <div className="h-full bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex items-center justify-center">
             <div className="text-center text-gray-500">
-              <Squares2X2Icon className="w-12 h-12 mx-auto mb-2" />
+              <LayoutGrid className="w-12 h-12 mx-auto mb-2" />
               <p className="font-medium">{widget.type}</p>
               <p className="text-sm mt-1">Widget type not implemented yet</p>
             </div>
@@ -152,7 +152,7 @@ const DashboardBuilder: React.FC = () => {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center text-gray-500">
-          <Squares2X2Icon className="w-16 h-16 mx-auto mb-4" />
+          <LayoutGrid className="w-16 h-16 mx-auto mb-4" />
           <p className="text-lg font-medium">No Dashboard Selected</p>
           <p className="text-sm mt-2">Create or select a dashboard to get started</p>
         </div>
@@ -182,12 +182,12 @@ const DashboardBuilder: React.FC = () => {
           >
             {isEditMode ? (
               <>
-                <CheckIcon className="w-5 h-5" />
+                <Check className="w-5 h-5" />
                 Done Editing
               </>
             ) : (
               <>
-                <PencilIcon className="w-5 h-5" />
+                <Edit className="w-5 h-5" />
                 Edit Dashboard
               </>
             )}
@@ -198,7 +198,7 @@ const DashboardBuilder: React.FC = () => {
               onClick={() => setShowWidgetSelector(true)}
               className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
-              <PlusIcon className="w-5 h-5" />
+              <Plus className="w-5 h-5" />
               Add Widget
             </button>
           )}
@@ -219,7 +219,7 @@ const DashboardBuilder: React.FC = () => {
         {activeDashboard.widgets.length === 0 && (
           <div className="col-span-full flex items-center justify-center h-96 bg-gray-50 dark:bg-gray-900 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
             <div className="text-center">
-              <Squares2X2Icon className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+              <LayoutGrid className="w-16 h-16 mx-auto mb-4 text-gray-400" />
               <p className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Widgets Added</p>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 Click "Edit Dashboard" and then "Add Widget" to get started

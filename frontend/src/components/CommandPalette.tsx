@@ -5,19 +5,19 @@ import useSearchStore, { SearchResult } from '../store/searchStore';
 import { infraApi, sopApi } from '../api';
 import { assetsApi } from '../api/extended';
 import {
-  MagnifyingGlassIcon,
-  ClockIcon,
-  XMarkIcon,
-  CommandLineIcon,
-  DocumentTextIcon,
+  Search,
+  Clock,
+  X,
+  Terminal,
+  FileText,
   ServerIcon,
-  ExclamationTriangleIcon,
-  ClipboardDocumentListIcon,
+  AlertTriangle,
+  ClipboardList,
   HomeIcon,
-  ChartBarIcon,
-  CurrencyDollarIcon,
-  ShieldCheckIcon,
-} from '@heroicons/react/24/outline';
+  BarChart,
+  DollarSign,
+  ShieldCheck,
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const CommandPalette: React.FC = () => {
@@ -215,19 +215,19 @@ const CommandPalette: React.FC = () => {
   const getIcon = (type: SearchResult['type']) => {
     switch (type) {
       case 'incident':
-        return <ExclamationTriangleIcon className="w-5 h-5" />;
+        return <AlertTriangle className="w-5 h-5" />;
       case 'task':
-        return <ClipboardDocumentListIcon className="w-5 h-5" />;
+        return <ClipboardList className="w-5 h-5" />;
       case 'asset':
         return <ServerIcon className="w-5 h-5" />;
       case 'sop':
-        return <DocumentTextIcon className="w-5 h-5" />;
+        return <FileText className="w-5 h-5" />;
       case 'report':
-        return <ChartBarIcon className="w-5 h-5" />;
+        return <BarChart className="w-5 h-5" />;
       case 'page':
         return <HomeIcon className="w-5 h-5" />;
       default:
-        return <DocumentTextIcon className="w-5 h-5" />;
+        return <FileText className="w-5 h-5" />;
     }
   };
 
@@ -267,7 +267,7 @@ const CommandPalette: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
           {/* Search Input */}
           <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
+            <Search className="w-5 h-5 text-gray-400" />
             <input
               ref={inputRef}
               type="text"
@@ -285,7 +285,7 @@ const CommandPalette: React.FC = () => {
           <div className="max-h-96 overflow-y-auto">
             {displayResults.length === 0 ? (
               <div className="p-8 text-center text-gray-500">
-                <CommandLineIcon className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                <Terminal className="w-12 h-12 mx-auto mb-3 text-gray-400" />
                 <p className="font-medium">No results found</p>
                 <p className="text-sm mt-1">Try searching for incidents, tasks, assets, or SOPs</p>
               </div>

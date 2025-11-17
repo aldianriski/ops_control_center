@@ -25,7 +25,7 @@ import {
   Bell,
   Wifi,
   WifiOff,
-  MagnifyingGlass,
+  Search,
 } from 'lucide-react';
 
 const Layout = () => {
@@ -127,7 +127,7 @@ const Layout = () => {
                 className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors border border-gray-300"
                 title="Search (⌘K)"
               >
-                <MagnifyingGlass size={16} />
+                <Search size={16} />
                 <span className="hidden sm:inline">Search</span>
                 <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs font-mono text-gray-500 bg-gray-50 border border-gray-300 rounded">
                   ⌘K
