@@ -134,15 +134,84 @@ export const adminExtendedApi = {
 
   // Report Templates
   getReportTemplates: async (filters?: Record<string, string>) => {
-    const { data } = await apiClient.get('/admin-extended/report-templates', { params: filters });
+    const { data } = await apiClient.get('/admin/report-templates', { params: filters });
     return data.data;
   },
   createReportTemplate: async (template: any) => {
-    const { data} = await apiClient.post('/admin-extended/report-templates', template);
+    const { data} = await apiClient.post('/admin/report-templates', template);
     return data.data;
   },
   updateReportTemplate: async (id: string, template: any) => {
-    const { data } = await apiClient.put(`/admin-extended/report-templates/${id}`, template);
+    const { data } = await apiClient.put(`/admin/report-templates/${id}`, template);
+    return data.data;
+  },
+  deleteReportTemplate: async (id: string) => {
+    const { data } = await apiClient.delete(`/admin/report-templates/${id}`);
+    return data;
+  },
+  deleteAPIToken: async (id: string) => {
+    const { data } = await apiClient.delete(`/admin/api-tokens/${id}`);
+    return data;
+  },
+  deleteAlertThreshold: async (id: string) => {
+    const { data } = await apiClient.delete(`/admin/alert-thresholds/${id}`);
+    return data;
+  },
+};
+
+// Audit Logs API
+export const auditLogsApi = {
+  getLogs: async (filters?: Record<string, string>) => {
+    const { data } = await apiClient.get('/admin/audit-logs', { params: filters });
+    return data.data;
+  },
+  getLogById: async (id: string) => {
+    const { data } = await apiClient.get(`/admin/audit-logs/${id}`);
+    return data.data;
+  },
+};
+
+// RBAC API
+export const rbacApi = {
+  // Roles
+  getRoles: async () => {
+    const { data } = await apiClient.get('/admin/rbac/roles');
+    return data.data;
+  },
+  getRoleById: async (id: string) => {
+    const { data } = await apiClient.get(`/admin/rbac/roles/${id}`);
+    return data.data;
+  },
+  createRole: async (role: any) => {
+    const { data } = await apiClient.post('/admin/rbac/roles', role);
+    return data.data;
+  },
+  updateRole: async (id: string, updates: any) => {
+    const { data } = await apiClient.put(`/admin/rbac/roles/${id}`, updates);
+    return data.data;
+  },
+  deleteRole: async (id: string) => {
+    const { data } = await apiClient.delete(`/admin/rbac/roles/${id}`);
+    return data;
+  },
+
+  // Permissions
+  getPermissions: async () => {
+    const { data } = await apiClient.get('/admin/rbac/permissions');
+    return data.data;
+  },
+
+  // Users
+  getUsers: async (filters?: Record<string, string>) => {
+    const { data } = await apiClient.get('/admin/rbac/users', { params: filters });
+    return data.data;
+  },
+  updateUserRole: async (userId: string, roleId: string) => {
+    const { data } = await apiClient.patch(`/admin/rbac/users/${userId}/role`, { role_id: roleId });
+    return data.data;
+  },
+  updateUserStatus: async (userId: string, status: string) => {
+    const { data } = await apiClient.patch(`/admin/rbac/users/${userId}/status`, { status });
     return data.data;
   },
 };
