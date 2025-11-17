@@ -2,9 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { finopsApi } from '../api';
 import KPICard from '../components/KPICard';
 import FinOpsRecommendations from '../components/FinOpsRecommendations';
+import TableFilter from '../components/TableFilter';
 import { DollarSign, TrendingUp, CreditCard } from 'lucide-react';
+import { useState } from 'react';
 
 const FinOps = () => {
+  const [filteredCostBreakdown, setFilteredCostBreakdown] = useState<any[]>([]);
+
   const { data: summary } = useQuery({
     queryKey: ['finops-summary'],
     queryFn: finopsApi.getSummary,
@@ -81,6 +85,20 @@ const FinOps = () => {
         <div className="px-6 py-4 border-b border-gray-200">
           <h3 className="text-lg font-medium text-gray-900">Cost Breakdown</h3>
         </div>
+        <div className="p-4 border-b border-gray-200">
+          <TableFilter
+            data={costBreakdown || []}
+            columns={[
+              { key: 'date', label: 'Date', filterable: false },
+              { key: 'environment', label: 'Environment', filterable: true },
+              { key: 'service', label: 'Service', filterable: true },
+              { key: 'cost_usd', label: 'Cost', filterable: false },
+              { key: 'ics_credits_applied', label: 'ICS Credits', filterable: false },
+            ]}
+            onFilteredDataChange={setFilteredCostBreakdown}
+            placeholder="Search cost records..."
+          />
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -103,7 +121,7 @@ const FinOps = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {costBreakdown?.slice(0, 20).map((record) => (
+              {filteredCostBreakdown.map((record) => (
                 <tr key={record.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {new Date(record.date).toLocaleDateString()}

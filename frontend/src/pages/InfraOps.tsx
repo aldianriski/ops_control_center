@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { infraApi } from '../api';
 import EvidencePanel from '../components/EvidencePanel';
 import InfrastructureMetrics from '../components/InfrastructureMetrics';
+import TableFilter from '../components/TableFilter';
 import { exportToCSV } from '../utils/export';
 import { FileText, BarChart3, Download } from 'lucide-react';
 import { useState } from 'react';
@@ -13,6 +14,8 @@ const InfraOps = () => {
   const activeTab = (searchParams.get('tab') as 'incidents' | 'tasks' | 'sla' | 'metrics') || 'incidents';
   const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
   const [isEvidencePanelOpen, setIsEvidencePanelOpen] = useState(false);
+  const [filteredIncidents, setFilteredIncidents] = useState<any[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<any[]>([]);
 
   const setActiveTab = (tab: 'incidents' | 'tasks' | 'sla' | 'metrics') => {
     setSearchParams({ tab });
@@ -140,8 +143,23 @@ const InfraOps = () => {
       {/* Content */}
       <div className="bg-white rounded-lg shadow">
         {activeTab === 'incidents' && (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className="space-y-4">
+            <div className="p-4 pb-0">
+              <TableFilter
+                data={incidents || []}
+                columns={[
+                  { key: 'jira_id', label: 'Jira ID', filterable: false },
+                  { key: 'title', label: 'Title', filterable: false },
+                  { key: 'severity', label: 'Severity', filterable: true },
+                  { key: 'status', label: 'Status', filterable: true },
+                  { key: 'squad', label: 'Squad', filterable: true },
+                ]}
+                onFilteredDataChange={setFilteredIncidents}
+                placeholder="Search incidents..."
+              />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -165,7 +183,7 @@ const InfraOps = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {incidents?.map((incident) => (
+                {filteredIncidents.map((incident) => (
                   <tr key={incident.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {incident.jira_id}
@@ -207,12 +225,28 @@ const InfraOps = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
 
         {activeTab === 'tasks' && (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className="space-y-4">
+            <div className="p-4 pb-0">
+              <TableFilter
+                data={tasks || []}
+                columns={[
+                  { key: 'jira_id', label: 'Jira ID', filterable: false },
+                  { key: 'title', label: 'Title', filterable: false },
+                  { key: 'status', label: 'Status', filterable: true },
+                  { key: 'squad', label: 'Squad', filterable: true },
+                  { key: 'assignee', label: 'Assignee', filterable: true },
+                ]}
+                onFilteredDataChange={setFilteredTasks}
+                placeholder="Search tasks..."
+              />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -233,7 +267,7 @@ const InfraOps = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {tasks?.map((task) => (
+                {filteredTasks.map((task) => (
                   <tr key={task.id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {task.jira_id}
@@ -254,6 +288,7 @@ const InfraOps = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         )}
 

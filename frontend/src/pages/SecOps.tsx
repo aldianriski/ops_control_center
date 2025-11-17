@@ -4,6 +4,7 @@ import { useAppStore } from '../store/appStore';
 import { assetsApi } from '../api/extended';
 import VulnerabilityCharts from '../components/VulnerabilityCharts';
 import MitreAttackMapping from '../components/MitreAttackMapping';
+import TableFilter from '../components/TableFilter';
 import { exportToCSV } from '../utils/export';
 import { useState } from 'react';
 import SkeletonLoader from '../components/SkeletonLoader';
@@ -14,6 +15,7 @@ const SecOps = () => {
   const { selectedEnvironment } = useAppStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = (searchParams.get('tab') as 'vulnerabilities' | 'assets' | 'incidents' | 'mitre') || 'assets';
+  const [filteredAssets, setFilteredAssets] = useState<any[]>([]);
 
   const setActiveTab = (tab: 'vulnerabilities' | 'assets' | 'incidents' | 'mitre') => {
     setSearchParams({ tab });
@@ -104,8 +106,23 @@ const SecOps = () => {
       ) : (
         <div className="bg-white rounded-lg shadow">
           {activeTab === 'assets' && (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
+            <div className="space-y-4">
+              <div className="p-4 pb-0">
+                <TableFilter
+                  data={assets || []}
+                  columns={[
+                    { key: 'hostname', label: 'Hostname', filterable: false },
+                    { key: 'asset_type', label: 'Type', filterable: true },
+                    { key: 'ip_address', label: 'IP Address', filterable: false },
+                    { key: 'risk_level', label: 'Risk Level', filterable: true },
+                    { key: 'owner', label: 'Owner', filterable: true },
+                  ]}
+                  onFilteredDataChange={setFilteredAssets}
+                  placeholder="Search assets..."
+                />
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -126,7 +143,7 @@ const SecOps = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {assets?.map((asset: any) => (
+                  {filteredAssets.map((asset: any) => (
                     <tr key={asset.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {asset.hostname}
@@ -153,6 +170,7 @@ const SecOps = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           )}
 
