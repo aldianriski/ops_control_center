@@ -8,12 +8,36 @@ The Edot Ops Control Center eliminates manual reporting, reduces context switchi
 
 ### Key Features
 
-- **Real-time Dashboards**: Unified view of incidents, SLA metrics, and AWS costs
-- **Automated Reporting**: Auto-generated weekly ops and monthly FinOps reports (PDF/Markdown)
-- **Integration-Driven**: Syncs with Jira ITSM and AWS Cost Explorer
-- **Forecasting Engine**: ML-powered cost forecasting with scenario planning
-- **SOP Management**: Built-in standard operating procedures with task linking
-- **Role-Based Access**: Manager, Head of Engineering, and Viewer roles
+**Core Modules:**
+- **Real-time Dashboards**: Unified view with custom widgets and KPI cards
+- **InfraOps**: Incident management, tasks, SLA tracking, infrastructure metrics
+- **SecOps**: Asset inventory, vulnerabilities, MITRE ATT&CK, security incidents
+- **FinOps**: AWS cost tracking, ICS credits, budgeting, and forecasting
+- **Automated Reporting**: Auto-generated weekly/monthly reports with scheduling
+- **SOP Management**: Procedures with execution mode and step tracking
+- **Role-Based Access**: Manager, Head of Engineering, Viewer, and Admin roles
+
+**Advanced Features (Implemented):**
+- 🤖 **AI Cost Forecasting**: Linear regression with 95% confidence intervals and anomaly detection
+- 📅 **Report Scheduling**: Automated daily/weekly/monthly/quarterly report distribution
+- 📈 **Grafana Integration**: Embed dashboards and panels directly in the app
+- 🔍 **Global Search**: Command palette (⌘K) for quick navigation
+- 🔄 **Environment Comparison**: Side-by-side metrics comparison
+- 💬 **Team Collaboration**: @mentions and comments on incidents
+- 💾 **Saved Filter Views**: Save and share custom filter configurations
+- 🎨 **Custom Dashboards**: Drag-and-drop widget builder with personalized layouts
+- 🔔 **Real-time Notifications**: WebSocket-powered live updates
+- 🎯 **Smart Rate Limiting**: Visual indicators for API usage
+
+**Technical Highlights:**
+- TypeScript strict mode with zero critical errors
+- Comprehensive error handling and validation
+- Automated synchronization with external APIs (Jira, AWS)
+- Real-time WebSocket updates for live dashboard
+- Linear regression algorithm for cost prediction
+- Z-score anomaly detection for cost spikes
+- Role-based access control (RBAC)
+- JWT authentication with secure token management
 
 ## Architecture
 
