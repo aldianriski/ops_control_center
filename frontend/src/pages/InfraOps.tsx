@@ -1,15 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 import { infraApi } from '../api';
+import EvidencePanel from '../components/EvidencePanel';
+import { FileText } from 'lucide-react';
 import { useState } from 'react';
 
 const InfraOps = () => {
   const [activeTab, setActiveTab] = useState<'incidents' | 'tasks' | 'sla'>('incidents');
+  const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
+  const [isEvidencePanelOpen, setIsEvidencePanelOpen] = useState(false);
 
   const { data: incidents } = useQuery({
     queryKey: ['incidents'],
     queryFn: () => infraApi.getIncidents(),
     enabled: activeTab === 'incidents',
   });
+
+  const handleViewEvidence = (incidentId: string) => {
+    setSelectedIncidentId(incidentId);
+    setIsEvidencePanelOpen(true);
+  };
 
   const { data: tasks } = useQuery({
     queryKey: ['tasks'],
@@ -79,11 +88,14 @@ const InfraOps = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Squad
                   </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {incidents?.map((incident) => (
-                  <tr key={incident.id}>
+                  <tr key={incident.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {incident.jira_id}
                     </td>
@@ -110,6 +122,15 @@ const InfraOps = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {incident.squad}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <button
+                        onClick={() => handleViewEvidence(incident.id)}
+                        className="flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium"
+                      >
+                        <FileText size={16} />
+                        Evidence
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -197,6 +218,18 @@ const InfraOps = () => {
           </div>
         )}
       </div>
+
+      {/* Evidence Panel */}
+      {selectedIncidentId && (
+        <EvidencePanel
+          incidentId={selectedIncidentId}
+          isOpen={isEvidencePanelOpen}
+          onClose={() => {
+            setIsEvidencePanelOpen(false);
+            setSelectedIncidentId(null);
+          }}
+        />
+      )}
     </div>
   );
 };

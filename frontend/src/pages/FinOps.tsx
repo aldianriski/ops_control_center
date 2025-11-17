@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { finopsApi } from '../api';
 import KPICard from '../components/KPICard';
+import FinOpsRecommendations from '../components/FinOpsRecommendations';
 import { DollarSign, TrendingUp, CreditCard } from 'lucide-react';
 
 const FinOps = () => {
@@ -125,6 +126,9 @@ const FinOps = () => {
           </table>
         </div>
       </div>
+
+      {/* FinOps Recommendations */}
+      <FinOpsRecommendations />
     </div>
   );
 };

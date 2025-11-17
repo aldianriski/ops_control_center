@@ -9,6 +9,7 @@ import SecOps from './pages/SecOps';
 import FinOps from './pages/FinOps';
 import Reports from './pages/Reports';
 import SOPs from './pages/SOPs';
+import Admin from './pages/Admin';
 
 function App() {
   const { isAuthenticated, loadUser } = useAuthStore();
@@ -39,6 +40,7 @@ function App() {
           <Route path="finops" element={<FinOps />} />
           <Route path="reports" element={<Reports />} />
           <Route path="sops" element={<SOPs />} />
+          <Route path="admin" element={<Admin />} />
         </Route>
       </Routes>
     </BrowserRouter>

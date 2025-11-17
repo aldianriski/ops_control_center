@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { sopApi } from '../api';
-import { BookOpen, Search } from 'lucide-react';
+import SOPExecutionMode from '../components/SOPExecutionMode';
+import { BookOpen, Search, PlayCircle } from 'lucide-react';
 import { useState } from 'react';
 
 const SOPs = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSOP, setSelectedSOP] = useState<any>(null);
+  const [isExecutionOpen, setIsExecutionOpen] = useState(false);
 
   const { data: sops } = useQuery({
     queryKey: ['sops', search, selectedCategory],
@@ -15,6 +18,11 @@ const SOPs = () => {
         ...(selectedCategory && { category: selectedCategory }),
       }),
   });
+
+  const handleExecuteSOP = (sop: any) => {
+    setSelectedSOP(sop);
+    setIsExecutionOpen(true);
+  };
 
   const categories = ['provisioning', 'security', 'incident', 'custom'];
 
@@ -83,16 +91,37 @@ const SOPs = () => {
                     </span>
                   ))}
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 flex items-center justify-between">
                   <p className="text-xs text-gray-500">
                     {sop.steps?.length || 0} steps
                   </p>
+                  <button
+                    onClick={() => handleExecuteSOP(sop)}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    <PlayCircle size={16} />
+                    Execute
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {/* SOP Execution Mode */}
+      {selectedSOP && (
+        <SOPExecutionMode
+          sopId={selectedSOP.id}
+          sopTitle={selectedSOP.title}
+          steps={selectedSOP.steps || []}
+          isOpen={isExecutionOpen}
+          onClose={() => {
+            setIsExecutionOpen(false);
+            setSelectedSOP(null);
+          }}
+        />
+      )}
     </div>
   );
 };

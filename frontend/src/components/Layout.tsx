@@ -2,6 +2,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import EnvironmentSwitcher from './EnvironmentSwitcher';
 import TeamSwitcher from './TeamSwitcher';
+import AIOpsAssistant from './AIOpsAssistant';
 import {
   LayoutDashboard,
   Server,
@@ -10,6 +11,7 @@ import {
   BookOpen,
   LogOut,
   Shield,
+  Settings,
 } from 'lucide-react';
 
 const Layout = () => {
@@ -22,6 +24,7 @@ const Layout = () => {
     { to: '/finops', label: 'FinOps', icon: DollarSign },
     { to: '/reports', label: 'Reports', icon: FileText },
     { to: '/sops', label: 'SOPs', icon: BookOpen },
+    { to: '/admin', label: 'Admin', icon: Settings },
   ];
 
   return (
@@ -78,6 +81,9 @@ const Layout = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Outlet />
       </main>
+
+      {/* AIOps Assistant - Floating Panel */}
+      <AIOpsAssistant />
     </div>
   );
 };
