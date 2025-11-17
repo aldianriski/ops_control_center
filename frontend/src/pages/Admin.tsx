@@ -3,6 +3,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { adminExtendedApi } from '../api/extended';
 import AuditLog from '../components/AuditLog';
+import RBACManagement from '../components/RBACManagement';
+import RateLimitIndicator from '../components/RateLimitIndicator';
 import { exportToJSON, importFromJSON } from '../utils/export';
 import {
   Key,
@@ -17,6 +19,8 @@ import {
   History,
   Download,
   Upload,
+  Shield,
+  Activity,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
@@ -55,10 +59,10 @@ interface ReportTemplate {
 const Admin = () => {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeTab = (searchParams.get('tab') as 'tokens' | 'thresholds' | 'templates' | 'audit') || 'tokens';
+  const activeTab = (searchParams.get('tab') as 'tokens' | 'thresholds' | 'templates' | 'rbac' | 'ratelimit' | 'audit') || 'tokens';
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
 
-  const setActiveTab = (tab: 'tokens' | 'thresholds' | 'templates' | 'audit') => {
+  const setActiveTab = (tab: 'tokens' | 'thresholds' | 'templates' | 'rbac' | 'ratelimit' | 'audit') => {
     setSearchParams({ tab });
   };
 
@@ -220,6 +224,8 @@ const Admin = () => {
     { id: 'tokens' as const, label: 'API Tokens', icon: Key },
     { id: 'thresholds' as const, label: 'Alert Thresholds', icon: AlertTriangle },
     { id: 'templates' as const, label: 'Report Templates', icon: FileText },
+    { id: 'rbac' as const, label: 'Access Control', icon: Shield },
+    { id: 'ratelimit' as const, label: 'Rate Limiting', icon: Activity },
     { id: 'audit' as const, label: 'Audit Logs', icon: History },
   ];
 
@@ -612,6 +618,20 @@ const Admin = () => {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* RBAC Tab */}
+        {activeTab === 'rbac' && (
+          <div className="p-6">
+            <RBACManagement />
+          </div>
+        )}
+
+        {/* Rate Limiting Tab */}
+        {activeTab === 'ratelimit' && (
+          <div className="p-6">
+            <RateLimitIndicator position="standalone" showDetails />
           </div>
         )}
 

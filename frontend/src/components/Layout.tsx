@@ -9,6 +9,7 @@ import WorkModeSelector from './WorkModeSelector';
 import AIOpsAssistant from './AIOpsAssistant';
 import GlobalSearch from './GlobalSearch';
 import NotificationPanel from './NotificationPanel';
+import RateLimitIndicator from './RateLimitIndicator';
 import toast from 'react-hot-toast';
 import {
   LayoutDashboard,
@@ -112,6 +113,9 @@ const Layout = () => {
                   <WifiOff size={16} className="text-gray-400" />
                 )}
               </div>
+
+              {/* Rate Limit Indicator */}
+              <RateLimitIndicator position="header" />
 
               {/* Notification Bell */}
               <button
