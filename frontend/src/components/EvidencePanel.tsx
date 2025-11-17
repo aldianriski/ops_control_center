@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { evidenceApi } from '../api/extended';
+import GrafanaSnapshotImport from './GrafanaSnapshotImport';
 import { FileText, Image, BarChart3, File, Upload, ExternalLink, X } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -25,6 +26,7 @@ interface Evidence {
 const EvidencePanel = ({ incidentId, isOpen, onClose }: EvidencePanelProps) => {
   const queryClient = useQueryClient();
   const [isUploading, setIsUploading] = useState(false);
+  const [showGrafanaImport, setShowGrafanaImport] = useState(false);
   const [newEvidence, setNewEvidence] = useState({
     evidence_type: 'log' as Evidence['evidence_type'],
     title: '',

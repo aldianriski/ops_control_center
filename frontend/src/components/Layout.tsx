@@ -2,6 +2,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import EnvironmentSwitcher from './EnvironmentSwitcher';
 import TeamSwitcher from './TeamSwitcher';
+import WorkModeSelector from './WorkModeSelector';
 import AIOpsAssistant from './AIOpsAssistant';
 import {
   LayoutDashboard,
@@ -37,8 +38,11 @@ const Layout = () => {
               Edot Ops Control Center
             </h1>
             <div className="flex items-center gap-4">
+              <WorkModeSelector />
+              <div className="h-6 w-px bg-gray-300" />
               <TeamSwitcher />
               <EnvironmentSwitcher />
+              <div className="h-6 w-px bg-gray-300" />
               <span className="text-sm text-gray-600">{user?.name}</span>
               <button
                 onClick={logout}

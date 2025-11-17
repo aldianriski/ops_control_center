@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAppStore } from '../store/appStore';
 import { assetsApi } from '../api/extended';
+import VulnerabilityCharts from '../components/VulnerabilityCharts';
+import MitreAttackMapping from '../components/MitreAttackMapping';
 import { useState } from 'react';
 import SkeletonLoader from '../components/SkeletonLoader';
-import { Server, Shield, AlertTriangle } from 'lucide-react';
+import { Server, Shield, AlertTriangle, Target } from 'lucide-react';
 
 const SecOps = () => {
   const { selectedEnvironment } = useAppStore();
-  const [activeTab, setActiveTab] = useState<'vulnerabilities' | 'assets' | 'incidents'>('assets');
+  const [activeTab, setActiveTab] = useState<'vulnerabilities' | 'assets' | 'incidents' | 'mitre'>('assets');
 
   const { data: assets, isLoading } = useQuery({
     queryKey: ['assets', selectedEnvironment],
@@ -19,6 +21,7 @@ const SecOps = () => {
     { id: 'assets' as const, label: 'Asset Inventory', icon: Server },
     { id: 'vulnerabilities' as const, label: 'Vulnerabilities', icon: AlertTriangle },
     { id: 'incidents' as const, label: 'Security Incidents', icon: Shield },
+    { id: 'mitre' as const, label: 'MITRE ATT&CK', icon: Target },
   ];
 
   const riskColors: Record<string, string> = {
@@ -116,14 +119,20 @@ const SecOps = () => {
           )}
 
           {activeTab === 'vulnerabilities' && (
-            <div className="p-6 text-center text-gray-500">
-              Vulnerabilities view - Integration with security scanning tools
+            <div className="p-6">
+              <VulnerabilityCharts />
             </div>
           )}
 
           {activeTab === 'incidents' && (
             <div className="p-6 text-center text-gray-500">
               Security incidents view - Integrated with SIEM and threat intelligence
+            </div>
+          )}
+
+          {activeTab === 'mitre' && (
+            <div className="p-6">
+              <MitreAttackMapping />
             </div>
           )}
         </div>
