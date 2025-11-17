@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { adminExtendedApi } from '../api/extended';
 import AuditLog from '../components/AuditLog';
+import { exportToJSON, importFromJSON } from '../utils/export';
 import {
   Key,
   AlertTriangle,
@@ -14,8 +15,11 @@ import {
   CheckCircle,
   Settings,
   History,
+  Download,
+  Upload,
 } from 'lucide-react';
 import { format } from 'date-fns';
+import toast from 'react-hot-toast';
 
 interface APIToken {
   id: string;
@@ -171,6 +175,47 @@ const Admin = () => {
     setTimeout(() => setCopiedToken(null), 2000);
   };
 
+  // Export/Import handlers
+  const handleExportConfig = () => {
+    const configData = {
+      thresholds,
+      templates,
+      exportedAt: new Date().toISOString(),
+      version: '1.0',
+    };
+    exportToJSON(configData, 'admin-configuration');
+  };
+
+  const handleImportConfig = () => {
+    importFromJSON<{ thresholds: AlertThreshold[]; templates: ReportTemplate[] }>(
+      (data) => {
+        if (!data.thresholds || !data.templates) {
+          toast.error('Invalid configuration file structure');
+          return;
+        }
+
+        // In production, this would call APIs to bulk import
+        toast.success(
+          `Ready to import ${data.thresholds.length} thresholds and ${data.templates.length} templates. (API integration pending)`
+        );
+        console.log('Configuration to import:', data);
+
+        // Refresh queries
+        queryClient.invalidateQueries({ queryKey: ['alert-thresholds'] });
+        queryClient.invalidateQueries({ queryKey: ['report-templates'] });
+      },
+      (data) => {
+        // Validator
+        return (
+          data &&
+          Array.isArray(data.thresholds) &&
+          Array.isArray(data.templates) &&
+          data.version === '1.0'
+        );
+      }
+    );
+  };
+
   const tabs = [
     { id: 'tokens' as const, label: 'API Tokens', icon: Key },
     { id: 'thresholds' as const, label: 'Alert Thresholds', icon: AlertTriangle },
@@ -187,14 +232,34 @@ const Admin = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <Settings size={28} />
-          Administration
-        </h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Manage API tokens, alert thresholds, and report templates
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+            <Settings size={28} />
+            Administration
+          </h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Manage API tokens, alert thresholds, and report templates
+          </p>
+        </div>
+        {(activeTab === 'thresholds' || activeTab === 'templates') && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleImportConfig}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+            >
+              <Upload size={16} />
+              Import Config
+            </button>
+            <button
+              onClick={handleExportConfig}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+            >
+              <Download size={16} />
+              Export Config
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Tabs */}

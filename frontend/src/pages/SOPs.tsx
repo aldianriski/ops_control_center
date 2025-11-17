@@ -1,11 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { sopApi } from '../api';
 import SOPExecutionMode from '../components/SOPExecutionMode';
-import { BookOpen, Search, PlayCircle } from 'lucide-react';
+import { exportToJSON, importFromJSON } from '../utils/export';
+import { BookOpen, Search, PlayCircle, Download, Upload } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const SOPs = () => {
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search') || '';
   const selectedCategory = searchParams.get('category') || '';
@@ -46,15 +49,79 @@ const SOPs = () => {
     setIsExecutionOpen(true);
   };
 
+  const handleExportSOPs = () => {
+    if (!sops || sops.length === 0) {
+      toast.error('No SOPs to export');
+      return;
+    }
+    exportToJSON(sops, 'sops-export');
+  };
+
+  const handleImportSOPs = () => {
+    importFromJSON<any[]>(
+      (data) => {
+        // Validate SOP structure
+        if (!Array.isArray(data)) {
+          toast.error('Invalid file format. Expected an array of SOPs.');
+          return;
+        }
+
+        const hasValidStructure = data.every(
+          (sop) =>
+            sop.title &&
+            sop.category &&
+            Array.isArray(sop.steps)
+        );
+
+        if (!hasValidStructure) {
+          toast.error('Invalid SOP structure in file');
+          return;
+        }
+
+        // In production, this would call an API to bulk import
+        toast.success(`Ready to import ${data.length} SOPs. (API integration pending)`);
+        console.log('SOPs to import:', data);
+
+        // Refresh the list
+        queryClient.invalidateQueries({ queryKey: ['sops'] });
+      },
+      (data) => {
+        // Validator function
+        return (
+          Array.isArray(data) &&
+          data.every((sop) => sop.title && sop.category && Array.isArray(sop.steps))
+        );
+      }
+    );
+  };
+
   const categories = ['provisioning', 'security', 'incident', 'custom'];
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">SOPs</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Standard Operating Procedures and workflows
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">SOPs</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Standard Operating Procedures and workflows
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleImportSOPs}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+          >
+            <Upload size={16} />
+            Import
+          </button>
+          <button
+            onClick={handleExportSOPs}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+          >
+            <Download size={16} />
+            Export
+          </button>
+        </div>
       </div>
 
       {/* Filters */}

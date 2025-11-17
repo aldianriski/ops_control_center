@@ -97,3 +97,114 @@ export const formatDateTimeForExport = (date: string | Date): string => {
   const d = new Date(date);
   return d.toISOString().replace('T', ' ').split('.')[0];
 };
+
+/**
+ * Import data from JSON file
+ * @param onImport Callback function to handle imported data
+ * @param validator Optional validator function to validate data structure
+ */
+export const importFromJSON = <T = any>(
+  onImport: (data: T) => void,
+  validator?: (data: any) => boolean
+): void => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.style.display = 'none';
+
+  input.onchange = async (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (!file) {
+      toast.error('No file selected');
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      // Validate if validator provided
+      if (validator && !validator(data)) {
+        toast.error('Invalid file format or structure');
+        return;
+      }
+
+      onImport(data);
+      toast.success(`Imported data from ${file.name}`);
+    } catch (error) {
+      console.error('Import error:', error);
+      toast.error('Failed to import file. Please check the file format.');
+    } finally {
+      document.body.removeChild(input);
+    }
+  };
+
+  document.body.appendChild(input);
+  input.click();
+};
+
+/**
+ * Import data from CSV file
+ * @param onImport Callback function to handle imported data
+ * @param validator Optional validator function to validate data structure
+ */
+export const importFromCSV = <T extends Record<string, any>>(
+  onImport: (data: T[]) => void,
+  validator?: (data: T[]) => boolean
+): void => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.csv';
+  input.style.display = 'none';
+
+  input.onchange = async (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (!file) {
+      toast.error('No file selected');
+      return;
+    }
+
+    try {
+      const text = await file.text();
+
+      Papa.parse<T>(text, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          if (results.errors.length > 0) {
+            console.error('Parse errors:', results.errors);
+            toast.error('Failed to parse CSV file');
+            return;
+          }
+
+          const data = results.data;
+
+          // Validate if validator provided
+          if (validator && !validator(data)) {
+            toast.error('Invalid file format or structure');
+            return;
+          }
+
+          onImport(data);
+          toast.success(`Imported ${data.length} rows from ${file.name}`);
+        },
+        error: (error) => {
+          console.error('Parse error:', error);
+          toast.error('Failed to parse CSV file');
+        },
+      });
+    } catch (error) {
+      console.error('Import error:', error);
+      toast.error('Failed to import file. Please check the file format.');
+    } finally {
+      document.body.removeChild(input);
+    }
+  };
+
+  document.body.appendChild(input);
+  input.click();
+};
