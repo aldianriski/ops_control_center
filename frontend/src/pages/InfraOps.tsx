@@ -38,7 +38,7 @@ const InfraOps = () => {
         toast.success(`Incident ${message.action}: ${message.data.jira_id}`, { duration: 2000 });
       } else if (message.type === 'task') {
         queryClient.invalidateQueries({ queryKey: ['tasks'] });
-        toast.info(`Task ${message.action}: ${message.data.jira_id}`, { duration: 2000 });
+        toast(`Task ${message.action}: ${message.data.jira_id}`, { duration: 2000 });
       }
     },
   });

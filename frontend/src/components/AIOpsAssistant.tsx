@@ -8,7 +8,6 @@ const AIOpsAssistant = () => {
   const { selectedEnvironment } = useAppStore();
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeView, setActiveView] = useState<'daily' | 'weekly' | 'rca' | 'cost'>('daily');
-  const queryClient = useQueryClient();
 
   const { data: dailySummary } = useQuery({
     queryKey: ['aiops-daily', selectedEnvironment],

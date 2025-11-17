@@ -50,7 +50,7 @@ const Layout = () => {
         });
 
         // Also show a toast for immediate feedback
-        toast[message.data.type === 'error' ? 'error' : 'info'](message.data.title);
+        message.data.type === 'error' ? toast.error : toast(message.data.title);
       } else {
         // For other events, create notifications
         const notificationMap: Record<string, any> = {

@@ -22,7 +22,7 @@ import toast from 'react-hot-toast';
 
 const CommandPalette: React.FC = () => {
   const navigate = useNavigate();
-  const { isOpen, query, recentSearches, recentItems, setOpen, setQuery, addRecentSearch, addRecentItem } = useSearchStore();
+  const { isOpen, query, recentItems, setOpen, setQuery, addRecentSearch, addRecentItem } = useSearchStore();
   const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useReportScheduleStore, { ReportSchedule, ReportFormat, ScheduleFrequency } from '../store/reportScheduleStore';
+import useReportScheduleStore, { ReportSchedule, ReportFormat, ScheduleFrequency, ReportType } from '../store/reportScheduleStore';
 import {
   Calendar,
   Clock,
@@ -21,7 +21,7 @@ const ReportScheduleManager: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    type: 'weekly' as const,
+    type: 'weekly' as ReportType,
     format: 'pdf' as ReportFormat,
     frequency: 'weekly' as ScheduleFrequency,
     scheduleTime: '09:00',
@@ -71,9 +71,9 @@ const ReportScheduleManager: React.FC = () => {
     setFormData({
       name: '',
       description: '',
-      type: 'weekly',
+      type: 'weekly' as ReportType,
       format: 'pdf',
-      frequency: 'weekly',
+      frequency: 'weekly' as ScheduleFrequency,
       scheduleTime: '09:00',
       scheduleDays: [1],
       recipients: '',

@@ -17,16 +17,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Server, Cpu, HardDrive, Network, Activity, AlertCircle } from 'lucide-react';
-import { format } from 'date-fns';
 
-interface InfraMetric {
-  id: string;
-  environment: string;
-  metric_type: 'node_health' | 'oom_events' | 'nf_conntrack' | 'ebs_throughput' | 'nat_traffic';
-  timestamp: string;
-  value: number;
-  metadata?: any;
-}
 
 const InfrastructureMetrics = () => {
   const { selectedEnvironment } = useAppStore();
@@ -34,7 +25,7 @@ const InfrastructureMetrics = () => {
 
   const { data: metrics, isLoading } = useQuery({
     queryKey: ['infra-metrics', selectedEnvironment, timeRange],
-    queryFn: () => evidenceApi.getMetrics({ environment: selectedEnvironment, hours: 24 }),
+    queryFn: () => evidenceApi.getMetrics({ environment: selectedEnvironment, hours: '24' }),
   });
 
   // Mock data for demonstration

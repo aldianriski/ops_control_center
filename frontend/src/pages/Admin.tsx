@@ -95,15 +95,15 @@ const Admin = () => {
     enabled: activeTab === 'tokens',
   });
 
-  const { data: thresholds = [] } = useQuery({
+  const { data: thresholds = [] } = useQuery<AlertThreshold[]>({
     queryKey: ['alert-thresholds'],
-    queryFn: adminExtendedApi.getAlertThresholds,
+    queryFn: () => adminExtendedApi.getAlertThresholds(),
     enabled: activeTab === 'thresholds',
   });
 
-  const { data: templates = [] } = useQuery({
+  const { data: templates = [] } = useQuery<ReportTemplate[]>({
     queryKey: ['report-templates'],
-    queryFn: adminExtendedApi.getReportTemplates,
+    queryFn: () => adminExtendedApi.getReportTemplates(),
     enabled: activeTab === 'templates',
   });
 

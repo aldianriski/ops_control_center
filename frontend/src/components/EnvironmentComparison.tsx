@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 const EnvironmentComparison: React.FC = () => {
-  const { selectedEnvironments, comparisonType, isComparisonMode, setComparisonMode, clearSelection, toggleEnvironment } = useComparisonStore();
+  const { selectedEnvironments, comparisonType, isComparisonMode, setComparisonMode, toggleEnvironment } = useComparisonStore();
 
   // Fetch data for each environment
   const { data: incidentsData } = useQuery({
@@ -249,8 +249,8 @@ const EnvironmentComparison: React.FC = () => {
                     {metric.label}
                   </td>
                   {data.map((envData: any, index: number) => {
-                    const value = envData.data[metric.key] || 0;
-                    const prevValue = index > 0 ? (data[index - 1].data[metric.key] || 0) : value;
+                    const value = (envData.data as any)[metric.key] || 0;
+                    const prevValue = index > 0 ? ((data[index - 1].data as any)[metric.key] || 0) : value;
                     const diff = value - prevValue;
                     const diffPercent = prevValue > 0 ? ((diff / prevValue) * 100).toFixed(1) : '0';
 

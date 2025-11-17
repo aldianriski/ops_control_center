@@ -14,7 +14,7 @@ type WorkMode = 'normal' | 'incident' | 'maintenance' | 'audit';
 interface WorkModeOption {
   id: WorkMode;
   label: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: any;
   color: string;
   bgColor: string;
   description: string;

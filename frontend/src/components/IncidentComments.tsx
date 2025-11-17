@@ -41,13 +41,13 @@ const IncidentComments: React.FC<IncidentCommentsProps> = ({ incidentId, inciden
   const [newComment, setNewComment] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Mock team members for @mentions
-  const teamMembers = [
-    { name: 'John Doe', email: 'john@example.com', handle: 'john' },
-    { name: 'Jane Smith', email: 'jane@example.com', handle: 'jane' },
-    { name: 'Bob Johnson', email: 'bob@example.com', handle: 'bob' },
-    { name: 'Alice Williams', email: 'alice@example.com', handle: 'alice' },
-  ];
+  // Mock team members for @mentions (currently not used, but kept for future features)
+  // const teamMembers = [
+  //   { name: 'John Doe', email: 'john@example.com', handle: 'john' },
+  //   { name: 'Jane Smith', email: 'jane@example.com', handle: 'jane' },
+  //   { name: 'Bob Johnson', email: 'bob@example.com', handle: 'bob' },
+  //   { name: 'Alice Williams', email: 'alice@example.com', handle: 'alice' },
+  // ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,7 +71,7 @@ const IncidentComments: React.FC<IncidentCommentsProps> = ({ incidentId, inciden
 
     // Simulate notification to mentioned users
     if (mentions.length > 0) {
-      toast.info(`Notified ${mentions.length} team member(s)`, { duration: 2000 });
+      toast.success(`Notified ${mentions.length} team member(s)`, { duration: 2000 });
     }
   };
 

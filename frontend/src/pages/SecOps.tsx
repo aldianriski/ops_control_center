@@ -33,9 +33,9 @@ const SecOps = () => {
     onMessage: (message: WebSocketMessage) => {
       if (message.type === 'asset') {
         queryClient.invalidateQueries({ queryKey: ['assets', selectedEnvironment] });
-        toast.info(`Asset ${message.action}: ${message.data.hostname}`, { duration: 2000 });
+        toast(`Asset ${message.action}: ${message.data.hostname}`, { duration: 2000 });
       } else if (message.type === 'alert') {
-        toast.warning(`Security Alert: ${message.data.metric}`, { duration: 3000 });
+        toast(`Security Alert: ${message.data.metric}`, { duration: 3000 });
       }
     },
   });

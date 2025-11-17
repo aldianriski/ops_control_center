@@ -41,7 +41,7 @@ const FinOpsRecommendations = () => {
     queryFn: () =>
       recommendationsApi.getRecommendations({
         environment: selectedEnvironment,
-        status: statusFilter === 'all' ? undefined : statusFilter,
+        ...(statusFilter !== 'all' && { status: statusFilter }),
       }),
   });
 

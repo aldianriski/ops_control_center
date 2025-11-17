@@ -59,7 +59,8 @@ const SOPExecutionMode = ({ sopId, sopTitle, steps, isOpen, onClose }: SOPExecut
   });
 
   const startExecutionMutation = useMutation({
-    mutationFn: sopExecutionApi.start,
+    mutationFn: ({ sopId, environment }: { sopId: string; environment: string }) =>
+      sopExecutionApi.start(sopId, environment),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['sop-executions', sopId] });
       setActiveExecution(data);
@@ -76,9 +77,8 @@ const SOPExecutionMode = ({ sopId, sopTitle, steps, isOpen, onClose }: SOPExecut
 
   const handleStartExecution = () => {
     startExecutionMutation.mutate({
-      sop_id: sopId,
+      sopId: sopId,
       environment: 'production', // This should come from context
-      trigger_type: 'manual',
     });
   };
 

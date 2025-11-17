@@ -49,7 +49,7 @@ export const exportToCSV = <T extends Record<string, any>>(
     document.body.removeChild(link);
 
     toast.success(`Exported ${data.length} rows to ${filename}.csv`);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Export error:', error);
     toast.error('Failed to export data');
   }
@@ -76,7 +76,7 @@ export const exportToJSON = (data: any, filename: string): void => {
     document.body.removeChild(link);
 
     toast.success(`Exported data to ${filename}.json`);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Export error:', error);
     toast.error('Failed to export data');
   }
@@ -133,7 +133,7 @@ export const importFromJSON = <T = any>(
 
       onImport(data);
       toast.success(`Imported data from ${file.name}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Import error:', error);
       toast.error('Failed to import file. Please check the file format.');
     } finally {
@@ -192,12 +192,12 @@ export const importFromCSV = <T extends Record<string, any>>(
           onImport(data);
           toast.success(`Imported ${data.length} rows from ${file.name}`);
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Parse error:', error);
           toast.error('Failed to parse CSV file');
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Import error:', error);
       toast.error('Failed to import file. Please check the file format.');
     } finally {

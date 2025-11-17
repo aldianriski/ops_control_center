@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, FileText, Server, Shield, DollarSign, BookOpen, Command, X } from 'lucide-react';
+import { Search, FileText, Server, Shield, BookOpen, Command, X } from 'lucide-react';
 
 interface SearchResult {
   id: string;
@@ -8,7 +8,7 @@ interface SearchResult {
   title: string;
   subtitle?: string;
   path: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: any;
 }
 
 const GlobalSearch = () => {

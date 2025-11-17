@@ -171,7 +171,9 @@ const SavedFilterViews: React.FC<SavedFilterViewsProps> = ({
                             {view.name}
                           </h4>
                           {view.isShared && (
-                            <ShareIcon className="w-4 h-4 text-green-600" title="Shared with team" />
+                            <span title="Shared with team">
+                              <ShareIcon size={16} className="text-green-600" />
+                            </span>
                           )}
                         </div>
                         {view.description && (

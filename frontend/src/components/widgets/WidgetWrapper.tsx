@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Cog6ToothIcon, ArrowsPointingOutIcon } from 'lucide-react';
+import { X, Settings, Maximize } from 'lucide-react';
 
 interface WidgetWrapperProps {
   title: string;
@@ -51,7 +51,7 @@ const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
               className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
               title="Expand"
             >
-              <ArrowsPointingOutIcon className="w-4 h-4" />
+              <Maximize className="w-4 h-4" />
             </button>
           )}
 
@@ -61,7 +61,7 @@ const WidgetWrapper: React.FC<WidgetWrapperProps> = ({
               className="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded transition-colors"
               title="Configure"
             >
-              <Cog6ToothIcon className="w-4 h-4" />
+              <Settings className="w-4 h-4" />
             </button>
           )}
 
