@@ -1,15 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { useAppStore } from '../store/appStore';
 import { assetsApi } from '../api/extended';
 import VulnerabilityCharts from '../components/VulnerabilityCharts';
 import MitreAttackMapping from '../components/MitreAttackMapping';
+import { exportToCSV } from '../utils/export';
 import { useState } from 'react';
 import SkeletonLoader from '../components/SkeletonLoader';
-import { Server, Shield, AlertTriangle, Target } from 'lucide-react';
+import { Server, Shield, AlertTriangle, Target, Download } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const SecOps = () => {
   const { selectedEnvironment } = useAppStore();
-  const [activeTab, setActiveTab] = useState<'vulnerabilities' | 'assets' | 'incidents' | 'mitre'>('assets');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = (searchParams.get('tab') as 'vulnerabilities' | 'assets' | 'incidents' | 'mitre') || 'assets';
+
+  const setActiveTab = (tab: 'vulnerabilities' | 'assets' | 'incidents' | 'mitre') => {
+    setSearchParams({ tab });
+  };
 
   const { data: assets, isLoading } = useQuery({
     queryKey: ['assets', selectedEnvironment],
@@ -31,13 +39,43 @@ const SecOps = () => {
     low: 'bg-green-100 text-green-800',
   };
 
+  const handleExport = () => {
+    if (activeTab === 'assets') {
+      if (assets && assets.length > 0) {
+        exportToCSV(assets, `secops-assets-${selectedEnvironment}`, [
+          'hostname',
+          'asset_type',
+          'ip_address',
+          'risk_level',
+          'owner',
+          'environment',
+        ]);
+      } else {
+        toast.error('No assets to export');
+      }
+    } else {
+      toast.error('Export only available for Assets tab');
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Security Operations</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Manage assets, vulnerabilities, and security incidents
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Security Operations</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Manage assets, vulnerabilities, and security incidents
+          </p>
+        </div>
+        {activeTab === 'assets' && (
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+          >
+            <Download size={16} />
+            Export to CSV
+          </button>
+        )}
       </div>
 
       {/* Tabs */}

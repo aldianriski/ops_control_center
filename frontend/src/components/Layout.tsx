@@ -4,6 +4,7 @@ import EnvironmentSwitcher from './EnvironmentSwitcher';
 import TeamSwitcher from './TeamSwitcher';
 import WorkModeSelector from './WorkModeSelector';
 import AIOpsAssistant from './AIOpsAssistant';
+import GlobalSearch from './GlobalSearch';
 import {
   LayoutDashboard,
   Server,
@@ -88,6 +89,9 @@ const Layout = () => {
 
       {/* AIOps Assistant - Floating Panel */}
       <AIOpsAssistant />
+
+      {/* Global Search (Cmd+K) */}
+      <GlobalSearch />
     </div>
   );
 };

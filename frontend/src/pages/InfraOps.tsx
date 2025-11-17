@@ -1,14 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { infraApi } from '../api';
 import EvidencePanel from '../components/EvidencePanel';
 import InfrastructureMetrics from '../components/InfrastructureMetrics';
-import { FileText, BarChart3 } from 'lucide-react';
+import { exportToCSV } from '../utils/export';
+import { FileText, BarChart3, Download } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const InfraOps = () => {
-  const [activeTab, setActiveTab] = useState<'incidents' | 'tasks' | 'sla' | 'metrics'>('incidents');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = (searchParams.get('tab') as 'incidents' | 'tasks' | 'sla' | 'metrics') || 'incidents';
   const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
   const [isEvidencePanelOpen, setIsEvidencePanelOpen] = useState(false);
+
+  const setActiveTab = (tab: 'incidents' | 'tasks' | 'sla' | 'metrics') => {
+    setSearchParams({ tab });
+  };
 
   const { data: incidents } = useQuery({
     queryKey: ['incidents'],
@@ -40,13 +48,70 @@ const InfraOps = () => {
     { id: 'metrics' as const, label: 'Infrastructure Metrics', icon: BarChart3 },
   ];
 
+  const handleExport = () => {
+    switch (activeTab) {
+      case 'incidents':
+        if (incidents && incidents.length > 0) {
+          exportToCSV(incidents, `infraops-incidents`, [
+            'jira_id',
+            'title',
+            'severity',
+            'status',
+            'squad',
+            'created_at',
+          ]);
+        } else {
+          toast.error('No incidents to export');
+        }
+        break;
+      case 'tasks':
+        if (tasks && tasks.length > 0) {
+          exportToCSV(tasks, `infraops-tasks`, [
+            'jira_id',
+            'title',
+            'status',
+            'squad',
+            'assignee',
+          ]);
+        } else {
+          toast.error('No tasks to export');
+        }
+        break;
+      case 'sla':
+        if (slaMetrics && slaMetrics.length > 0) {
+          exportToCSV(slaMetrics, `infraops-sla-metrics`, [
+            'week_start',
+            'total_requested_hours',
+            'total_delivered_hours',
+            'sla_percentage',
+          ]);
+        } else {
+          toast.error('No SLA metrics to export');
+        }
+        break;
+      default:
+        toast.error('Export not available for this tab');
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">InfraOps</h1>
-        <p className="mt-1 text-sm text-gray-500">
-          Manage incidents, tasks, and track SLA performance
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">InfraOps</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Manage incidents, tasks, and track SLA performance
+          </p>
+        </div>
+        {activeTab !== 'metrics' && (
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+          >
+            <Download size={16} />
+            Export to CSV
+          </button>
+        )}
       </div>
 
       {/* Tabs */}
