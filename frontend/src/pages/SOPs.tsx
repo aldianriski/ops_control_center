@@ -1,14 +1,36 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { sopApi } from '../api';
 import SOPExecutionMode from '../components/SOPExecutionMode';
 import { BookOpen, Search, PlayCircle } from 'lucide-react';
 import { useState } from 'react';
 
 const SOPs = () => {
-  const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('search') || '';
+  const selectedCategory = searchParams.get('category') || '';
   const [selectedSOP, setSelectedSOP] = useState<any>(null);
   const [isExecutionOpen, setIsExecutionOpen] = useState(false);
+
+  const handleSearchChange = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set('search', value);
+    } else {
+      params.delete('search');
+    }
+    setSearchParams(params);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set('category', value);
+    } else {
+      params.delete('category');
+    }
+    setSearchParams(params);
+  };
 
   const { data: sops } = useQuery({
     queryKey: ['sops', search, selectedCategory],
@@ -46,14 +68,14 @@ const SOPs = () => {
               type="text"
               placeholder="Search SOPs..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => handleSearchChange(e.target.value)}
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             />
           </div>
           <div>
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => handleCategoryChange(e.target.value)}
               className="block w-full px-3 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
             >
               <option value="">All Categories</option>

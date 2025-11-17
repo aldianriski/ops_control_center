@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { adminExtendedApi } from '../api/extended';
 import {
   Key,
@@ -47,8 +48,13 @@ interface ReportTemplate {
 
 const Admin = () => {
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<'tokens' | 'thresholds' | 'templates'>('tokens');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = (searchParams.get('tab') as 'tokens' | 'thresholds' | 'templates') || 'tokens';
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
+
+  const setActiveTab = (tab: 'tokens' | 'thresholds' | 'templates') => {
+    setSearchParams({ tab });
+  };
 
   // API Tokens
   const [newToken, setNewToken] = useState({ name: '', scopes: [] as string[] });
