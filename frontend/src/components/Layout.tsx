@@ -7,9 +7,11 @@ import EnvironmentSwitcher from './EnvironmentSwitcher';
 import TeamSwitcher from './TeamSwitcher';
 import WorkModeSelector from './WorkModeSelector';
 import AIOpsAssistant from './AIOpsAssistant';
-import GlobalSearch from './GlobalSearch';
+import CommandPalette from './CommandPalette';
+import EnvironmentComparison from './EnvironmentComparison';
 import NotificationPanel from './NotificationPanel';
 import RateLimitIndicator from './RateLimitIndicator';
+import useSearchStore from '../store/searchStore';
 import toast from 'react-hot-toast';
 import {
   LayoutDashboard,
@@ -23,11 +25,13 @@ import {
   Bell,
   Wifi,
   WifiOff,
+  MagnifyingGlass,
 } from 'lucide-react';
 
 const Layout = () => {
   const { user, logout } = useAuthStore();
   const { unreadCount, addNotification } = useNotificationStore();
+  const { setOpen: setSearchOpen } = useSearchStore();
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
 
   // WebSocket connection
@@ -117,6 +121,19 @@ const Layout = () => {
               {/* Rate Limit Indicator */}
               <RateLimitIndicator position="header" />
 
+              {/* Global Search Button */}
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors border border-gray-300"
+                title="Search (⌘K)"
+              >
+                <MagnifyingGlass size={16} />
+                <span className="hidden sm:inline">Search</span>
+                <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-xs font-mono text-gray-500 bg-gray-50 border border-gray-300 rounded">
+                  ⌘K
+                </kbd>
+              </button>
+
               {/* Notification Bell */}
               <button
                 onClick={() => setIsNotificationPanelOpen(true)}
@@ -178,14 +195,17 @@ const Layout = () => {
       {/* AIOps Assistant - Floating Panel */}
       <AIOpsAssistant />
 
-      {/* Global Search (Cmd+K) */}
-      <GlobalSearch />
+      {/* Command Palette (Cmd+K) */}
+      <CommandPalette />
 
       {/* Notification Panel */}
       <NotificationPanel
         isOpen={isNotificationPanelOpen}
         onClose={() => setIsNotificationPanelOpen(false)}
       />
+
+      {/* Environment Comparison Panel */}
+      <EnvironmentComparison />
     </div>
   );
 };
