@@ -1,15 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { infraApi } from '../api';
 import EvidencePanel from '../components/EvidencePanel';
 import InfrastructureMetrics from '../components/InfrastructureMetrics';
 import TableFilter from '../components/TableFilter';
+import ConnectionStatusBadge from '../components/ConnectionStatusBadge';
 import { exportToCSV } from '../utils/export';
+import { useWebSocket, WebSocketMessage } from '../hooks/useWebSocket';
 import { FileText, BarChart3, Download } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 const InfraOps = () => {
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = (searchParams.get('tab') as 'incidents' | 'tasks' | 'sla' | 'metrics') || 'incidents';
   const [selectedIncidentId, setSelectedIncidentId] = useState<string | null>(null);
@@ -20,6 +23,20 @@ const InfraOps = () => {
   const setActiveTab = (tab: 'incidents' | 'tasks' | 'sla' | 'metrics') => {
     setSearchParams({ tab });
   };
+
+  // Real-time updates via WebSocket
+  useWebSocket({
+    autoConnect: true,
+    onMessage: (message: WebSocketMessage) => {
+      if (message.type === 'incident') {
+        queryClient.invalidateQueries({ queryKey: ['incidents'] });
+        toast.success(`Incident ${message.action}: ${message.data.jira_id}`, { duration: 2000 });
+      } else if (message.type === 'task') {
+        queryClient.invalidateQueries({ queryKey: ['tasks'] });
+        toast.info(`Task ${message.action}: ${message.data.jira_id}`, { duration: 2000 });
+      }
+    },
+  });
 
   const { data: incidents } = useQuery({
     queryKey: ['incidents'],
@@ -101,7 +118,10 @@ const InfraOps = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">InfraOps</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-gray-900">InfraOps</h1>
+            <ConnectionStatusBadge />
+          </div>
           <p className="mt-1 text-sm text-gray-500">
             Manage incidents, tasks, and track SLA performance
           </p>

@@ -1,10 +1,15 @@
 import { Outlet, NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { useNotificationStore } from '../store/notificationStore';
+import { useWebSocket, WebSocketMessage } from '../hooks/useWebSocket';
 import EnvironmentSwitcher from './EnvironmentSwitcher';
 import TeamSwitcher from './TeamSwitcher';
 import WorkModeSelector from './WorkModeSelector';
 import AIOpsAssistant from './AIOpsAssistant';
 import GlobalSearch from './GlobalSearch';
+import NotificationPanel from './NotificationPanel';
+import toast from 'react-hot-toast';
 import {
   LayoutDashboard,
   Server,
@@ -14,10 +19,64 @@ import {
   LogOut,
   Shield,
   Settings,
+  Bell,
+  Wifi,
+  WifiOff,
 } from 'lucide-react';
 
 const Layout = () => {
   const { user, logout } = useAuthStore();
+  const { unreadCount, addNotification } = useNotificationStore();
+  const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
+
+  // WebSocket connection
+  const { connectionStatus, isConnected, lastMessage } = useWebSocket({
+    autoConnect: true,
+    onMessage: (message: WebSocketMessage) => {
+      // Handle different message types
+      if (message.type === 'notification') {
+        addNotification({
+          title: message.data.title,
+          message: message.data.message,
+          type: message.data.type || 'info',
+          priority: message.data.priority || 'normal',
+          actionUrl: message.data.actionUrl,
+          metadata: message.data,
+        });
+
+        // Also show a toast for immediate feedback
+        toast[message.data.type === 'error' ? 'error' : 'info'](message.data.title);
+      } else {
+        // For other events, create notifications
+        const notificationMap: Record<string, any> = {
+          incident: {
+            title: `${message.action === 'created' ? 'New' : 'Updated'} Incident`,
+            message: `Incident ${message.data.jira_id}: ${message.data.title}`,
+            type: message.data.severity === 'critical' ? 'error' : 'warning',
+            priority: message.data.severity === 'critical' ? 'urgent' : 'high',
+            actionUrl: '/infra?tab=incidents',
+          },
+          task: {
+            title: `${message.action === 'created' ? 'New' : 'Updated'} Task`,
+            message: `Task ${message.data.jira_id}: ${message.data.title}`,
+            type: 'info',
+            priority: 'normal',
+            actionUrl: '/infra?tab=tasks',
+          },
+          alert: {
+            title: 'System Alert',
+            message: `${message.data.metric} exceeded threshold in ${message.data.environment}`,
+            type: 'warning',
+            priority: message.data.severity === 'high' ? 'high' : 'normal',
+          },
+        };
+
+        if (notificationMap[message.type]) {
+          addNotification(notificationMap[message.type]);
+        }
+      }
+    },
+  });
 
   const navItems = [
     { to: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -43,6 +102,31 @@ const Layout = () => {
               <div className="h-6 w-px bg-gray-300" />
               <TeamSwitcher />
               <EnvironmentSwitcher />
+              <div className="h-6 w-px bg-gray-300" />
+
+              {/* WebSocket Status Indicator */}
+              <div className="flex items-center gap-2" title={`WebSocket: ${connectionStatus}`}>
+                {isConnected ? (
+                  <Wifi size={16} className="text-green-600" />
+                ) : (
+                  <WifiOff size={16} className="text-gray-400" />
+                )}
+              </div>
+
+              {/* Notification Bell */}
+              <button
+                onClick={() => setIsNotificationPanelOpen(true)}
+                className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                title="Notifications"
+              >
+                <Bell size={20} />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+
               <div className="h-6 w-px bg-gray-300" />
               <span className="text-sm text-gray-600">{user?.name}</span>
               <button
@@ -92,6 +176,12 @@ const Layout = () => {
 
       {/* Global Search (Cmd+K) */}
       <GlobalSearch />
+
+      {/* Notification Panel */}
+      <NotificationPanel
+        isOpen={isNotificationPanelOpen}
+        onClose={() => setIsNotificationPanelOpen(false)}
+      />
     </div>
   );
 };
